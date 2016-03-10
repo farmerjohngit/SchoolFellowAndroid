@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="stick_nav">
+        <attr name="stick_nav_top_id" format="reference"></attr>
+        <attr name="stick_nav_indictor" format="reference"></attr>
+        <attr name="stick_nav_pager" format="reference"></attr>
+    </declare-styleable>
+</resources>

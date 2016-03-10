@@ -1,0 +1,47 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.mogujie.gradle:dynamic:1.1.0.1-LOCAL'
+        classpath 'com.mogujie:information:1.0.0.123'
+
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+//    repositories.each {
+//        println "<<<" + it.getUrl()
+//    }
+
+}
+
+allprojects {
+    repositories {
+        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+
+//project.afterEvaluate {
+//    ConfigurationContainer configurations = project.getConfigurations();
+//   println  configurations.asMap
+//    configurations.all {println("root afterEvaluate<<<<"+it)}
+//
+////   println project.getDependencies().getModules()
+//
+//}
+//
+
