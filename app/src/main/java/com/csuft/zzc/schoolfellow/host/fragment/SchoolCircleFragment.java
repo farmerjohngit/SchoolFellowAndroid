@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,20 +29,34 @@ public class SchoolCircleFragment extends BaseFragment {
     List<SchoolCirclePagerData> mDataList;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.i("wangzhi", "onCreate");
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.school_circle_fra, container, false);
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
+    @Override
+    protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.school_circle_fra, container, false);
+    }
+
+    @Override
+    protected void initView() {
         initData();
 
-        AutoScrollViewPager scrollPager = (AutoScrollViewPager) rootView.findViewById(R.id.scrollPager);
+        AutoScrollViewPager scrollPager = (AutoScrollViewPager) mContentView.findViewById(R.id.scrollPager);
         scrollPager.setBannerData(DataFactory.createBannerDataList(2));
 
 
-        ViewPager pager = (ViewPager) rootView.findViewById(R.id.id_stick_pager);
+        ViewPager pager = (ViewPager) mContentView.findViewById(R.id.id_stick_pager);
 
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.id_stick_nav);
+        TabLayout tabLayout = (TabLayout) mContentView.findViewById(R.id.id_stick_nav);
 
         SchoolCirclePagerAdapter adapter = new SchoolCirclePagerAdapter(getFragmentManager());
         pager.setAdapter(adapter);
@@ -49,8 +64,6 @@ public class SchoolCircleFragment extends BaseFragment {
         tabLayout.setTabsFromPagerAdapter(adapter);
         tabLayout.setTabTextColors(Color.BLACK, Color.RED);
         tabLayout.setupWithViewPager(pager);
-
-        return rootView;
     }
 
 
@@ -73,7 +86,7 @@ public class SchoolCircleFragment extends BaseFragment {
 
         @Override
         public int getCount() {
-            return mDataList==null?0:mDataList.size();
+            return mDataList == null ? 0 : mDataList.size();
         }
 
         @Override

@@ -6,6 +6,11 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="chat" />
+        android:layout_height="wrap_content" />
+
+    <com.csuft.zzc.schoolfellow.base.view.PullToListView
+        android:id="@+id/pullToRefresh"
+        android:background="#00aadd"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

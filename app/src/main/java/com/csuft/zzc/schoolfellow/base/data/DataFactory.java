@@ -1,6 +1,6 @@
 package com.csuft.zzc.schoolfellow.base.data;
 
-import com.csuft.zzc.schoolfellow.host.PageData;
+import com.csuft.zzc.schoolfellow.host.data.ImItemData;
 import com.csuft.zzc.schoolfellow.host.data.SchoolCirclePagerData;
 
 import java.util.ArrayList;
@@ -33,10 +33,10 @@ public class DataFactory {
             data.itemDataList = new ArrayList<>();
             for (int j = 0; j < 10; j++) {
                 SchoolCirclePagerData.Info info = new SchoolCirclePagerData.Info();
-                info.name="wangzhi";
-                info.headImg="http://avatar.csdn.net/F/F/5/1_lmj623565791.jpg";
-                info.content="this is content";
-                info.time="now time";
+                info.name = "wangzhi";
+                info.headImg = "http://avatar.csdn.net/F/F/5/1_lmj623565791.jpg";
+                info.content = "this is content";
+                info.time = "now time";
 //                info.
                 data.itemDataList.add(info);
             }
@@ -44,5 +44,19 @@ public class DataFactory {
             dataList.add(data);
         }
         return dataList;
+    }
+
+
+    public static List<ImItemData> createImItemData(int count) {
+        List<ImItemData> list = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            ImItemData imItemData = new ImItemData();
+            imItemData.name = "wangzhi   " + i;
+            imItemData.imgUrl = "http://avatar.csdn.net/F/F/5/1_lmj623565791.jpg";
+            imItemData.content = "this is content";
+            imItemData.time = "now time";
+            list.add(imItemData);
+        }
+        return list;
     }
 }

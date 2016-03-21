@@ -14,7 +14,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -35,17 +35,17 @@ dependencies {
     compile 'com.mogujie:hotpatch:1.2.4@aar'
     compile 'com.mogujie:solar:2.7.0@aar'
 
+
+//    compile 'com.github.pavlospt:circleview:1.2'
 //    compile 'com.mogujie:information:1.0.0.123'
 //    compile 'com.mogujie.waterfall2:lib:+@aar'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
 
 //project.afterEvaluate {
 //    println "classpath: " + getRootProject().buildscript.configurations.classpath.files
 //    println("beforeEvaluate<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
 //}
-
-
-
 
 //gradle.taskGraph.?
 //print("<<<<<<<<")
@@ -86,3 +86,26 @@ project.afterEvaluate {
 //    println configurations.compile.resolve()
 ////    configurations.compile.each { println it }
 //}
+
+project.android.applicationVariants.all { variant ->
+    def pre = project.tasks.findByName("preDexDebug")
+
+    println "pre input " + pre.inputFiles
+    println "pre out " + pre.outputFolder
+    def t = variant.dex
+    println "inputFiles  " + t.inputFiles
+    println "inputDir  " + t.inputDir
+    println "libraries " + t.libraries
+    println "mainDexListFile  " + t.mainDexListFile
+
+    def tt = project.tasks.findByName("proguardRelease")
+    println "proguard  " + tt.class
+
+    def mergeResources = project.tasks.findByName("mergeDebugResources")
+
+    mergeResources.doFirst {
+        mergeResources.inputResourceSets.each {
+            println "it>>>" + it
+        }
+    }
+}

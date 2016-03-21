@@ -41,7 +41,6 @@ public class WaterfallFragment extends Fragment {
 
             @Override
             public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
                 ViewHolder viewHolder = new ViewHolder(inflater.inflate(R.layout.sclist_item, parent, false));
                 return viewHolder;
             }
