@@ -79,6 +79,9 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         Log.i("wangzhi", "onTouchEvent " + ev.getAction());
+        if (refreshStatus == RefreshStatus.REFRESHING) {
+            return true;
+        }
         int nowY = (int) ev.getY();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
@@ -88,9 +91,17 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                 int dy = nowY - mLastY;
                 if (Math.abs(dy) > 0) {
                     if (nowMargin >= mTopOffset && refreshViewIsOnTop()) {
-                        Log.i("wangzhi", "ACTION_MOVE " + (nowY - mDownY) * damp + "     " + mPullMaxDis);
+//                        Log.i("wangzhi", "ACTION_MOVE " + (nowY - mDownY) * damp + "     " + mPullMaxDis);
 //                        if ((nowY - mDownY) * damp <= mPullMaxDis) {
-                        moveHeader((int) ((nowY - mDownY) ));
+                        int moveTo = (nowY - mDownY);
+                        if (moveTo < mTopOffset) {
+                            moveTo = mTopOffset;
+                        } else if (moveTo > mPullMaxDis) {
+                            moveTo = mPullMaxDis;
+                        }
+                        float percent = Math.abs(moveTo - mTopOffset) * 1.0f / (mPullMaxDis + Math.abs(mTopOffset));
+                        Log.i("wangzhi", "percent " + percent + "  :   " + (percent * -0.3 + 0.5));
+                        moveHeader((int) ((nowY - mDownY) * (percent * -0.4 + 0.8)));
 //                        }
                     } else {
                         Log.i("wangzhi", "redispatch ");
@@ -109,6 +120,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                 if (nowMargin == mPullMaxDis) {
                     refreshStatus = RefreshStatus.REFRESHING;
                     onRefreshListener.onStartRefresh();
+                    mRefreshHeaderView.refreshAnimation();
                 } else {
                     moveHeader(mTopOffset);
 
@@ -132,7 +144,9 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-
+        if (refreshStatus == RefreshStatus.REFRESHING) {
+            return true;
+        }
         boolean isIntercept = false;
         int nowY = (int) ev.getY();
 
@@ -143,9 +157,9 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                 break;
             case MotionEvent.ACTION_MOVE:
                 int dy = nowY - mLastY;
-                Log.i("wangzhi", "dy  " + dy + "   " + mTouchSlop);
+
                 if (dy > 0 && refreshViewIsOnTop()) {
-                    if ((nowY - mDownY)  < mPullMaxDis) {
+                    if ((nowY - mDownY) < mPullMaxDis) {
                         isIntercept = true;
                     }
                     mLastY = nowY;
@@ -186,7 +200,8 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         } else if (moveTo > mPullMaxDis) {
             moveTo = mPullMaxDis;
         }
-        float percent = (moveTo-mTopOffset) * 1.0f / mPullMaxDis;
+        float percent = Math.abs(moveTo - mTopOffset) * 1.0f / (mPullMaxDis + Math.abs(mTopOffset));
+        Log.i("wangzhi", "percent " + percent + " moveTo:" + moveTo + " mTopOffset: " + mTopOffset + "   " + mPullMaxDis);
         mRefreshHeaderView.setPercent(percent);
         onRefreshListener.onPullDown(percent);
         refreshStatus = RefreshStatus.PULL_DOWN;
@@ -199,6 +214,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     public void refreshFinish() {
         refreshStatus = RefreshStatus.INIT;
         moveHeader(mTopOffset);
+        mRefreshHeaderView.abortAnimation();
     }
 
     public void setOnRefreshListener(AbsPullToRefresh.OnRefreshListener onRefreshListener) {

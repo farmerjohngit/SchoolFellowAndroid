@@ -11,7 +11,10 @@
     <dimen name="design_snackbar_padding_vertical">14dp</dimen>
     <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
     <!-- Extra spacing between the action and message views -->
-    <dimen name="design_snackbar_extra_spacing_horizontal">0dp</dimen>
+    <dimen name="easy_toast_action_margin_right">8dp</dimen>
+    <dimen name="easy_toast_action_margin_left">8dp</dimen>
+    <dimen name="easy_toast_action_padding_left">8dp</dimen>
+    <dimen name="easy_toast_action_padding_right">8dp</dimen>
     <!-- The maximum width for a Snackbar's inline action. If the view is width than this then
     the Snackbar will change to vertical stacking -->
     <dimen name="design_snackbar_action_inline_max_width">128dp</dimen>

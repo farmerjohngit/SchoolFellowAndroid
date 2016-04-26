@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:orientation="vertical"
-    android:background="#cc00aa">
+    android:orientation="horizontal">
 
     <TextView
+        android:text="hello"
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,21 +13,22 @@
         android:layout_weight="1"
         android:drawablePadding="10dp"
         android:ellipsize="end"
-        android:paddingBottom="15dp"
+        android:maxLength="10"
         android:paddingLeft="15dp"
-        android:paddingTop="15dp"
         android:singleLine="true" />
 
-    <Button
-        android:text="button"
+    <ImageView
         android:id="@+id/action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|right|end"
-        android:layout_marginLeft="@dimen/design_snackbar_extra_spacing_horizontal"
-        android:layout_marginStart="@dimen/design_snackbar_extra_spacing_horizontal"
+        android:layout_marginLeft="@dimen/easy_toast_action_margin_left"
+        android:layout_marginStart="@dimen/easy_toast_action_margin_left"
         android:paddingBottom="15dp"
-        android:paddingRight="17dp"
-        android:paddingTop="15dp" />
+        android:paddingLeft="@dimen/easy_toast_action_padding_left"
+        android:paddingRight="@dimen/easy_toast_action_padding_right"
+        android:paddingTop="15dp"
+        android:scaleType="center"
+        android:src="@mipmap/ok" />
 
 </LinearLayout>

@@ -87,25 +87,25 @@ project.afterEvaluate {
 ////    configurations.compile.each { println it }
 //}
 
-project.android.applicationVariants.all { variant ->
-    def pre = project.tasks.findByName("preDexDebug")
-
-    println "pre input " + pre.inputFiles
-    println "pre out " + pre.outputFolder
-    def t = variant.dex
-    println "inputFiles  " + t.inputFiles
-    println "inputDir  " + t.inputDir
-    println "libraries " + t.libraries
-    println "mainDexListFile  " + t.mainDexListFile
-
-    def tt = project.tasks.findByName("proguardRelease")
-    println "proguard  " + tt.class
-
-    def mergeResources = project.tasks.findByName("mergeDebugResources")
-
-    mergeResources.doFirst {
-        mergeResources.inputResourceSets.each {
-            println "it>>>" + it
-        }
-    }
-}
+//project.android.applicationVariants.all { variant ->
+//    def pre = project.tasks.findByName("preDexDebug")
+//
+//    println "pre input " + pre.inputFiles
+//    println "pre out " + pre.outputFolder
+//    def t = variant.dex
+//    println "inputFiles  " + t.inputFiles
+//    println "inputDir  " + t.inputDir
+//    println "libraries " + t.libraries
+//    println "mainDexListFile  " + t.mainDexListFile
+//
+//    def tt = project.tasks.findByName("proguardRelease")
+//    println "proguard  " + tt.class
+//
+//    def mergeResources = project.tasks.findByName("mergeDebugResources")
+//
+//    mergeResources.doFirst {
+//        mergeResources.inputResourceSets.each {
+//            println "it>>>" + it
+//        }
+//    }
+//}
