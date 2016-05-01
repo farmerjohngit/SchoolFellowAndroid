@@ -16,4 +16,20 @@
         <item name="android:drawable">@drawable/banner_dot_normal</item>
     </style>
 
+    <style name="user_relation_information_style">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:drawable">@drawable/banner_dot_normal</item>
+    </style>
+
+    <style name="user_relation_information_layout_style">
+
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_weight">1</item>
+    </style>
 </resources>

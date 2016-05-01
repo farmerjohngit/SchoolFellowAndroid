@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@android:color/white"
+                android:orientation="vertical">
 
     <com.csuft.zzc.schoolfellow.base.view.WebImageView
         android:id="@+id/head_img"
-        android:layout_width="40dp"
+        android:layout_width="45dp"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"/>
 
     <TextView
         android:id="@+id/name_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/time_txt"
-        android:layout_toRightOf="@+id/head_img" />
+        android:layout_toRightOf="@+id/head_img"
+        android:textSize="@dimen/user_name_text_size"/>
 
     <TextView
         android:id="@+id/content_txt"
@@ -24,7 +28,10 @@
         android:layout_below="@id/name_txt"
         android:layout_toLeftOf="@+id/time_txt"
         android:layout_toRightOf="@+id/head_img"
-        android:text="content" />
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="content"
+        android:textColor="#c5c5c5"/>
 
     <TextView
         android:id="@+id/time_txt"
@@ -32,6 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="23:01:12" />
+        android:text="23:01:12"/>
 
 </RelativeLayout>

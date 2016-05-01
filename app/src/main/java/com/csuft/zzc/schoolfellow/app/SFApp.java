@@ -4,9 +4,12 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
+import com.csuft.zzc.schoolfellow.BuildConfig;
 import com.csuft.zzc.schoolfellow.base.utils.AppContextGetter;
+import com.mogujie.layoutcast.LayoutCast;
 
 import java.io.File;
 
@@ -19,6 +22,9 @@ public class SFApp extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         AppContextGetter.instance().setApplicationContext(this);
+        if (BuildConfig.DEBUG) {
+            LayoutCast.init(this);
+        }
     }
 
     @Override

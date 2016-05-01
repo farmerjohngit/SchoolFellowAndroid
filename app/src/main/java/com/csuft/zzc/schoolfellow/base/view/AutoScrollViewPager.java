@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuft.zzc.schoolfellow.R;
-import com.csuft.zzc.schoolfellow.base.data.BannerData;
+import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
+import com.csuft.zzc.schoolfellow.circle.data.NewsBannerData;
 
 /**
  * Created by wangzhi on 16/3/10.
@@ -37,10 +38,13 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
     @Override
     protected ViewPager obtainContainer() {
-        ViewPager viewPager = new ViewPager(getContext());
+        final ViewPager viewPager = new ViewPager(getContext());
+
         mAdapter = new ViewPagerAdapter();
+        viewPager.setOverScrollMode(OVER_SCROLL_NEVER);
         viewPager.setAdapter(mAdapter);
-        viewPager.setCurrentItem(defaultItem);
+        viewPager.setCurrentItem(1);
+//        viewPager.addOnPageChangeListener(new CircularViewPagerHandler(viewPager));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -49,8 +53,13 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
             @Override
             public void onPageSelected(int position) {
-                Log.i("wangzhi", "onPageSelected");
-                changeIndicator(position % getChildCount());
+                ScLog.i("onPageSelected " + position);
+                if (position == 0) {
+                    viewPager.setCurrentItem(getBannerCount(), true);
+                } else if (position == getBannerCount() + 1) {
+                    viewPager.setCurrentItem(1, true); //notice how this jumps to position 1, and not position 0. Position 0 is the fake page!
+                }
+                changeIndicator(position);
             }
 
             @Override
@@ -67,7 +76,7 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
         @Override
         public int getCount() {
-            return getBannerCount() > 0 ? Integer.MAX_VALUE : 0;
+            return getBannerCount() + 2;
         }
 
         @Override
@@ -77,12 +86,18 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            position = position % getBannerCount();
-            BannerData data = mDataList.get(position);
+            ScLog.i("count: " + getBannerCount());
+            ScLog.i("position: " + position);
+
+            if (mDataList == null) {
+                return null;
+            }
+            position = mapIndex(position);
+            NewsBannerData.BannerItem data = mDataList.get(position);
 
             View item = null;
             if (itemFactory != null) {
-                item = itemFactory.createItemViewm(data);
+                item = itemFactory.createItemView(data);
             } else {
                 item = createOwnItemView(data);
             }
@@ -102,7 +117,7 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
         }
     }
 
-    protected View createOwnItemView(BannerData data) {
+    protected View createOwnItemView(NewsBannerData.BannerItem data) {
         WebImageView item = new WebImageView(getContext());
         item.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         item.setImageUrl(data.imgUrl, ScreenUtil.instance().getScreenWidth(), ScreenUtil.instance().dip2px(100));
@@ -112,13 +127,29 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
     @Override
     protected void notifyDataSetChanged() {
-        mContainer.setCurrentItem(defaultItem);
-        changeIndicator(defaultItem);
         mAdapter.notifyDataSetChanged();
+        mContainer.setCurrentItem(1);
+        changeIndicator(1);
     }
 
 
+    public int mapIndex(int pos) {
+        int result = 0;
+        if (pos == 0) {
+            result = getBannerCount() - 1;
+        } else if (pos == getBannerCount() + 1) {
+            result = 0;
+        } else {
+            result = pos - 1;
+        }
+        return result;
+    }
+
     protected void changeIndicator(int pos) {
+        ScLog.i("changeIndicator " + pos);
+        ScLog.i("changeIndicator " + mapIndex(pos));
+        pos = mapIndex(pos);
+
         int childCount = mIndicatorContainer.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View dotView = mIndicatorContainer.getChildAt(i);

@@ -3,15 +3,14 @@
 buildscript {
     repositories {
         mavenLocal()
-        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
+//        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.mogujie.gradle:dynamic:1.1.0.1-LOCAL'
-        classpath 'com.mogujie:information:1.0.0.123'
-
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.mogujie.gradle:fastrun:0.0.5-LOCAL'
+//
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -24,8 +23,9 @@ buildscript {
 
 allprojects {
     repositories {
-        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
+        mavenLocal()
         jcenter()
+//        maven { url 'http://maven.mogujie.org/nexus/content/groups/mitpublic/' }
     }
 }
 

@@ -74,23 +74,9 @@ public class MeFragment extends BaseFragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Snackbar snackbar =
-//                        Snackbar.make(
-//                                mContentView,
-//                                "Snack Bar",
-//                                Snackbar.LENGTH_SHORT);
-//
-//                snackbar.show();
-//                Random random = new Random();
+
                 EasyToast.make(button, "h"+i++, "default", 2600).show();
 
-//                Toast.makeText(getActivity(), "hello" + i++, Toast.LENGTH_SHORT).show();
-//                int time = 1000 + random.nextInt(2000);
-//                if (time >= 2000) {
-//                    EasyToast.make(MeFragment.this.getActivity(), "default" + time, "default", time).show();
-//                } else {
-//                    EasyToast.make(MeFragment.this.getActivity(), "default" + time, "default1", time).show();
-//                }
             }
         });
     }

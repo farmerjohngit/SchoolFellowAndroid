@@ -14,10 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuft.zzc.schoolfellow.R;
+import com.csuft.zzc.schoolfellow.base.data.BaseData;
 import com.csuft.zzc.schoolfellow.base.data.DataFactory;
 import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
+import com.csuft.zzc.schoolfellow.base.net.BaseApi;
+import com.csuft.zzc.schoolfellow.base.net.CallBack;
+import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.csuft.zzc.schoolfellow.base.view.AbsAutoScrollLayout;
+import com.csuft.zzc.schoolfellow.base.view.AutoHorizontalScrollView;
 import com.csuft.zzc.schoolfellow.base.view.AutoScrollViewPager;
-import com.csuft.zzc.schoolfellow.host.data.SchoolCirclePagerData;
+import com.csuft.zzc.schoolfellow.circle.adapter.NewsWaterFallAdapter;
+import com.csuft.zzc.schoolfellow.circle.data.NewsBannerData;
+import com.csuft.zzc.schoolfellow.circle.data.SchoolCirclePagerData;
 
 import java.util.List;
 
@@ -27,7 +35,7 @@ import java.util.List;
 public class SchoolCircleFragment extends BaseFragment {
 
     List<SchoolCirclePagerData> mDataList;
-
+    AbsAutoScrollLayout mScrollPager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,8 +58,8 @@ public class SchoolCircleFragment extends BaseFragment {
     protected void initView() {
         initData();
 
-        AutoScrollViewPager scrollPager = (AutoScrollViewPager) mContentView.findViewById(R.id.scrollPager);
-        scrollPager.setBannerData(DataFactory.createBannerDataList(2));
+        mScrollPager = (AbsAutoScrollLayout) mContentView.findViewById(R.id.scrollPager);
+//        mScrollPager.setBannerData(DataFactory.createBannerDataList(2));
 
 
         ViewPager pager = (ViewPager) mContentView.findViewById(R.id.id_stick_pager);
@@ -68,9 +76,37 @@ public class SchoolCircleFragment extends BaseFragment {
 
 
     private void initData() {
+        reqDataWithCache();
         mDataList = DataFactory.createSchoolCirclePagerData(2);
     }
 
+
+    public void reqData() {
+        reqBannerData();
+    }
+
+    public void reqDataWithCache() {
+        reqData();
+    }
+
+    public void reqBannerData() {
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/news_banner", null, NewsBannerData.class, new CallBack<NewsBannerData>() {
+
+            @Override
+            public void onSuccess(NewsBannerData data) {
+                ScLog.i("onSucces " + data.result.bannerList.size());
+                mScrollPager.setBannerData(data.result.bannerList);
+            }
+
+            @Override
+            public void onFailure(int code, String error) {
+                ScLog.i("onFailure");
+
+            }
+        });
+
+
+    }
 
     class SchoolCirclePagerAdapter extends FragmentPagerAdapter {
 
@@ -80,7 +116,7 @@ public class SchoolCircleFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            WaterfallFragment waterfallFragment = WaterfallFragment.create(mDataList.get(position).itemDataList);
+            WaterfallFragment waterfallFragment = WaterfallFragment.create(new NewsWaterFallAdapter(getContext()));
             return waterfallFragment;
         }
 
@@ -93,6 +129,7 @@ public class SchoolCircleFragment extends BaseFragment {
         public CharSequence getPageTitle(int position) {
             return mDataList.get(position).title;
         }
+
     }
 
 

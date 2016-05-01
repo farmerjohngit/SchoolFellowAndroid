@@ -1,84 +1,67 @@
 package com.csuft.zzc.schoolfellow.host.fragment;
 
-import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
-import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
+import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
+import com.csuft.zzc.schoolfellow.base.net.BaseApi;
+import com.csuft.zzc.schoolfellow.base.net.CallBack;
+import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.WaterFallRecyclerView;
-import com.csuft.zzc.schoolfellow.base.view.WebImageView;
-import com.csuft.zzc.schoolfellow.host.data.SchoolCirclePagerData;
-
-import java.util.List;
+import com.csuft.zzc.schoolfellow.circle.adapter.NewsWaterFallAdapter;
+import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 
 /**
  * Created by wangzhi on 16/3/11.
  */
-public class WaterfallFragment extends Fragment {
+public class WaterfallFragment extends BaseFragment {
 
-    private List<SchoolCirclePagerData.Info> mItemDataList;
-    private LayoutInflater inflater;
 
-    public static WaterfallFragment create(List<SchoolCirclePagerData.Info> itemDataList) {
+    RecyclerView.Adapter mAdapter;
+
+
+    public static WaterfallFragment create(RecyclerView.Adapter adapter) {
         WaterfallFragment waterfallFragment = new WaterfallFragment();
-        waterfallFragment.mItemDataList = itemDataList;
+        waterfallFragment.mAdapter = adapter;
         return waterfallFragment;
     }
 
-    @Nullable
+
     @Override
-    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.sclist_fra, container, false);
-        WaterFallRecyclerView recyclerView = (WaterFallRecyclerView) root.findViewById(R.id.id_stick_inner_scroll);
-        recyclerView.setAdapter(new RecyclerView.Adapter<ViewHolder>() {
+    protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        return inflater.inflate(R.layout.sclist_fra, container, false);
+    }
 
+    @Override
+    protected void initView() {
+        WaterFallRecyclerView recyclerView = (WaterFallRecyclerView) mContentView.findViewById(R.id.id_stick_inner_scroll);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        reqData();
+    }
+
+    public void reqData() {
+        ScLog.i("-----reqData-------");
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/news", null, NewsData.class, new CallBack<NewsData>() {
             @Override
-            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                ViewHolder viewHolder = new ViewHolder(inflater.inflate(R.layout.sclist_item, parent, false));
-                return viewHolder;
+            public void onSuccess(NewsData data) {
+                ScLog.i("req news onSuccess");
+                NewsWaterFallAdapter newsWaterFallAdapter = (NewsWaterFallAdapter) mAdapter;
+                newsWaterFallAdapter.setItemDataList(data.result.newsList);
+                newsWaterFallAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onBindViewHolder(ViewHolder holder, int position) {
-                SchoolCirclePagerData.Info info = mItemDataList.get(position);
-                holder.nameTxt.setText(info.name);
-                holder.contentTxt.setText(info.content);
-                holder.timeTxt.setText(info.time);
-                holder.headImg.setImageUrl(info.headImg, ScreenUtil.instance().dip2px(40), ScreenUtil.instance().dip2px(40));
-            }
-
-
-            @Override
-            public int getItemCount() {
-                return mItemDataList == null ? 0 : mItemDataList.size();
+            public void onFailure(int code, String error) {
+                ScLog.i("req news onFailure");
             }
         });
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-
-        return root;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder(View itemView) {
-            super(itemView);
-            headImg = (WebImageView) itemView.findViewById(R.id.head_img);
-            nameTxt = (TextView) itemView.findViewById(R.id.name_txt);
-            timeTxt = (TextView) itemView.findViewById(R.id.time_txt);
-            contentTxt = (TextView) itemView.findViewById(R.id.content_txt);
-        }
-
-        public WebImageView headImg;
-        public TextView nameTxt;
-        public TextView timeTxt;
-        public TextView contentTxt;
-    }
 }

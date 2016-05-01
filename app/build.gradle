@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
+//apply plugin: 'fastrun'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.csuft.zzc.schoolfellow"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
@@ -22,38 +22,21 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:support-v4:22.2.0@aar'
-    compile 'com.android.support:design:22.2.0'
-    compile 'com.android.support:recyclerview-v7:22.2.0@aar'
+//    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:support-v4:23.0.0@aar'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.android.support:recyclerview-v7:23.0.0@aar'
 
-    compile 'com.jakewharton:butterknife:7.0.1'
+
+    compile 'com.facebook.react:react-native:+'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 
-    compile 'com.mogujie:hotpatch:1.2.4@aar'
-    compile 'com.mogujie:solar:2.7.0@aar'
+    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.mogujie:layoutcast:1.0.2-LOCAL'
 
-
-//    compile 'com.github.pavlospt:circleview:1.2'
-//    compile 'com.mogujie:information:1.0.0.123'
-//    compile 'com.mogujie.waterfall2:lib:+@aar'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
-
-//project.afterEvaluate {
-//    println "classpath: " + getRootProject().buildscript.configurations.classpath.files
-//    println("beforeEvaluate<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-//}
-
-//gradle.taskGraph.?
-//print("<<<<<<<<")
-//
-//ConfigurationContainer configurations = project.getConfigurations();
-//Configuration configuration = configurations.getByName("compile")
-//def ta = project.tasks.findByName("clean")
-//println "<<<" + configuration.files
 
 task copyAllDependencies(type: Copy) {
     from configurations.compile
@@ -61,51 +44,5 @@ task copyAllDependencies(type: Copy) {
 //    println configurations.compile.files
 }
 
-//task showRepos << {
-//    println repositories.collect { it.name }
-//}
-project.afterEvaluate {
 
-//
-//   def t= project.tasks.findByName("prepareComMogujieSolar270Library ")
-//    t.outputs.upToDateWhen {false}
-//    t.doLast {
-//        println "<<<"+t.taskDependencies
 
-//    }
-//    ConfigurationContainer configurations = project.getConfigurations();
-//    println configurations.names
-//    println  configurations.asMap
-//    configurations.all {println("afterEvaluate<<<<"+it.files)}
-
-//   println project.getDependencies().getModules()
-
-}
-
-//task showMeCache << {
-//    println configurations.compile.resolve()
-////    configurations.compile.each { println it }
-//}
-
-//project.android.applicationVariants.all { variant ->
-//    def pre = project.tasks.findByName("preDexDebug")
-//
-//    println "pre input " + pre.inputFiles
-//    println "pre out " + pre.outputFolder
-//    def t = variant.dex
-//    println "inputFiles  " + t.inputFiles
-//    println "inputDir  " + t.inputDir
-//    println "libraries " + t.libraries
-//    println "mainDexListFile  " + t.mainDexListFile
-//
-//    def tt = project.tasks.findByName("proguardRelease")
-//    println "proguard  " + tt.class
-//
-//    def mergeResources = project.tasks.findByName("mergeDebugResources")
-//
-//    mergeResources.doFirst {
-//        mergeResources.inputResourceSets.each {
-//            println "it>>>" + it
-//        }
-//    }
-//}

@@ -180,6 +180,10 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     protected abstract T createRefreshView();
 
 
+    public T getRefreshView() {
+        return mRefreshView;
+    }
+
     protected boolean refreshViewIsOnTop() {
         if (this.mRefreshView instanceof ScrollView) {
             return ((ScrollView) this.mRefreshView).getChildCount() == 0 ? true : this.mRefreshView.getScrollY() <= 0;
@@ -188,7 +192,8 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
             View child = recyclerView.getChildAt(0);
             return null == child ? true : child.getTop() >= 0;
         } else if (this.mRefreshView instanceof ListView) {
-            return ((ListView) mRefreshView).getFirstVisiblePosition() == 0 && ((ListView) mRefreshView).getChildAt(0).getTop() == 0;
+            View child = ((ListView) mRefreshView).getChildAt(0);
+            return ((ListView) mRefreshView).getFirstVisiblePosition() == 0 && child == null ? true : child.getTop() == 0;
         } else {
             return true;
         }

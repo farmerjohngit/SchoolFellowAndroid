@@ -1,12 +1,5 @@
 package com.csuft.zzc.schoolfellow.host;
 
-import android.graphics.Color;
-import android.net.Uri;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTabHost;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,19 +11,15 @@ import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
-import com.csuft.zzc.schoolfellow.host.fragment.ChatFragment;
+import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
 import com.csuft.zzc.schoolfellow.host.fragment.FragmentFactory;
 import com.csuft.zzc.schoolfellow.host.fragment.HostFragmentTabHost;
 import com.csuft.zzc.schoolfellow.host.fragment.MeFragment;
 import com.csuft.zzc.schoolfellow.host.fragment.SchoolCircleFragment;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 
 public class HostActivity extends BaseFragmentActivity {
 //
@@ -49,18 +38,15 @@ public class HostActivity extends BaseFragmentActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.host_act);
-        ButterKnife.bind(this);
         init();
         initView();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     private void init() {
