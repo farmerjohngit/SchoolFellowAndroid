@@ -1,9 +1,11 @@
-package com.csuft.zzc.schoolfellow;
+package com.csuft.zzc.schoolfellow.react;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import com.csuft.zzc.schoolfellow.BuildConfig;
+import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
 import com.facebook.react.LifecycleState;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -14,7 +16,7 @@ import com.facebook.react.shell.MainReactPackage;
  * Created by wangzhi on 16/4/26.
  */
 
-public class ReactNativeAct extends Activity implements DefaultHardwareBackBtnHandler {
+public abstract class ReactNativeBaseAct extends BaseFragmentActivity implements DefaultHardwareBackBtnHandler {
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
 
@@ -31,10 +33,12 @@ public class ReactNativeAct extends Activity implements DefaultHardwareBackBtnHa
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, "SchoolFellow", null);
+        mReactRootView.startReactApplication(mReactInstanceManager, getAppName(), null);
 
         setContentView(mReactRootView);
     }
+
+    public abstract String getAppName();
 
     @Override
     public void invokeDefaultOnBackPressed() {

@@ -1,5 +1,7 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
+import com.csuft.zzc.schoolfellow.base.data.BaseData;
+
 import java.util.Map;
 
 /**
@@ -7,7 +9,8 @@ import java.util.Map;
  */
 public class BaseApi {
 
-    public static final String HOST_URL = "http://104.224.133.227:3000";
+//            public static final String HOST_URL = "http://104.224.133.227:3000";
+    public static final String HOST_URL = "http://192.168.56.1:3000";
     AbsNetExecutorFactory netExecutorFactory;
 
     private static class SingletonHolder {
@@ -38,7 +41,7 @@ public class BaseApi {
 //        return response.body().string();
 //    }
 
-    public void get(String url, Map<String, String> params, Class clazz, CallBack callBack) {
+    public <T extends BaseData> void get(String url, Map<String, String> params, Class<T> clazz, CallBack<T> callBack) {
         ApiRequest apiRequest = new ApiRequest.Builder()
                 .method(ApiRequest.GET)
                 .url(url)
@@ -49,7 +52,7 @@ public class BaseApi {
         request(apiRequest);
     }
 
-    public void post(String url, Map<String, String> params, CallBack callBack) {
+    public <T extends BaseData> void post(String url, Map<String, String> params, Class<T> clazz, CallBack<T> callBack) {
 
 
     }

@@ -5,46 +5,47 @@
               android:background="@color/white"
               android:orientation="vertical">
 
-    <LinearLayout
+    <com.csuft.zzc.schoolfellow.base.view.TopBar
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:background="@color/white"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:paddingLeft="2dp"
+        android:paddingRight="12dp"
+        >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="@android:color/transparent"
             android:text="联系人"/>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            />
 
         <ImageView
             android:layout_width="15dp"
             android:layout_height="match_parent"
             android:src="@mipmap/plus_alt"/>
-    </LinearLayout>
+    </com.csuft.zzc.schoolfellow.base.view.TopBar>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:background="#c5c5c5"
+        android:paddingBottom="6dp"
         android:paddingLeft="14dp"
         android:paddingRight="14dp"
         android:paddingTop="6dp"
-        android:paddingBottom="6dp"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
             android:background="@drawable/corner_bg"
+            android:orientation="horizontal"
             >
 
             <ImageView
@@ -56,16 +57,16 @@
                 android:src="@mipmap/search"/>
 
             <EditText
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="搜索联系人"
                 android:paddingBottom="1dp"
                 android:paddingTop="1dp"
-                android:textSize="10sp"
-                android:background="@android:color/transparent"/>
+                android:textSize="10sp"/>
         </LinearLayout>
     </LinearLayout>
 

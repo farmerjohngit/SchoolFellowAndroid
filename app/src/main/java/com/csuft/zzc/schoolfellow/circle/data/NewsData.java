@@ -14,6 +14,10 @@ public class NewsData extends BaseData {
     }
 
     public static class NewsItem {
+        public long indexId;
+
+        public String _id;
+
         public String title;
 
         public String subTitle;
@@ -27,7 +31,7 @@ public class NewsData extends BaseData {
             for (NewsData.Paragraph paragraph : paragraphs) {
                 if (paragraph.contentType == type
                         && paragraph.content != null
-                        && paragraph.content.size() > 0 && !TextUtils.isEmpty(paragraph.content.get(0))) {
+                        && paragraph.content.size() > 0 && !TextUtils.isEmpty(paragraph.content.get(0).trim())) {
                     return paragraph.content.get(0);
                 }
             }

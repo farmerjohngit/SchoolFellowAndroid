@@ -39,6 +39,7 @@ public class WebImageView extends ImageView {
     public void setImageUrl(String url, int width, int height, boolean circle) {
         if (TextUtils.isEmpty(url)) {
             ScLog.e("url is null");
+            setImageResource(android.R.color.transparent);
             return;
         }
         RequestCreator creator = Picasso.with(getContext()).load(url);

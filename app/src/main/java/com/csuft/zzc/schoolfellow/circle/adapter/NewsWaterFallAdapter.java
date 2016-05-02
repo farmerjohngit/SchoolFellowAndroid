@@ -1,6 +1,7 @@
 package com.csuft.zzc.schoolfellow.circle.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextPaint;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
+import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
+import com.csuft.zzc.schoolfellow.circle.act.NewsDetailAct;
 import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 
 import java.util.List;
@@ -28,20 +31,34 @@ public class NewsWaterFallAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.news_item, parent, false));
+        View root = LayoutInflater.from(mContext).inflate(R.layout.news_item, parent, false);
+        ViewHolder viewHolder = new ViewHolder(root);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NewsData.NewsItem info = mItemDataList.get(position);
+        final NewsData.NewsItem info = mItemDataList.get(position);
         holder.titleTxt.setText(info.title);
         holder.contentTxt.setText(info.getFirstForSpecType(NewsData.Paragraph.TEXT_TYPE));
         holder.timeTxt.setText(info.time);
-        holder.headImg.setImageUrl(info.getFirstForSpecType(NewsData.Paragraph.IMG_TYPE), ScreenUtil.instance().dip2px(40), ScreenUtil.instance().dip2px(40));
+        ScLog.i("temp","<<"+info.getFirstForSpecType(NewsData.Paragraph.TEXT_TYPE));
+        if(info.title.contains("大讨论活动工作布置会上的讲话")){
+            ScLog.i("temp","onBindViewHolder-> "+info.getFirstForSpecType(NewsData.Paragraph.IMG_TYPE));
+        }
+        holder.headImg.setImageUrl(info.getFirstForSpecType(NewsData.Paragraph.IMG_TYPE), ScreenUtil.instance().dip2px(160), ScreenUtil.instance().dip2px(90));
 
         TextPaint tp = holder.titleTxt.getPaint();
         tp.setFakeBoldText(true);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, NewsDetailAct.class);
+                intent.putExtra("_id", info._id);
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 

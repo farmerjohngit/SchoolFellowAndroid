@@ -1,5 +1,6 @@
-package com.csuft.zzc.schoolfellow.host.fragment;
+package com.csuft.zzc.schoolfellow.base.fragment;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,21 +20,34 @@ import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 /**
  * Created by wangzhi on 16/3/11.
  */
-public class WaterfallFragment extends BaseFragment {
+public abstract class WaterBasefallFragment extends BaseFragment {
 
-
+    private static final String TAG = "WaterBasefallFragment";
     RecyclerView.Adapter mAdapter;
 
-
-    public static WaterfallFragment create(RecyclerView.Adapter adapter) {
-        WaterfallFragment waterfallFragment = new WaterfallFragment();
-        waterfallFragment.mAdapter = adapter;
-        return waterfallFragment;
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        ScLog.i("onSaveInstanceState");
+//        outState.put
     }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        ScLog.i("onViewStateRestored");
+    }
+
+//    public static WaterBasefallFragment create(RecyclerView.Adapter adapter) {
+//        WaterBasefallFragment waterBasefallFragment = new WaterBasefallFragment();
+//        waterBasefallFragment.mAdapter = adapter;
+//        return waterBasefallFragment;
+//    }
 
 
     @Override
     protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
+        mAdapter = obtainAdapter();
         return inflater.inflate(R.layout.sclist_fra, container, false);
     }
 
@@ -50,7 +64,7 @@ public class WaterfallFragment extends BaseFragment {
         BaseApi.getInstance().get(BaseApi.HOST_URL + "/news", null, NewsData.class, new CallBack<NewsData>() {
             @Override
             public void onSuccess(NewsData data) {
-                ScLog.i("req news onSuccess");
+                ScLog.i("req news onSuccess " + mAdapter);
                 NewsWaterFallAdapter newsWaterFallAdapter = (NewsWaterFallAdapter) mAdapter;
                 newsWaterFallAdapter.setItemDataList(data.result.newsList);
                 newsWaterFallAdapter.notifyDataSetChanged();
@@ -63,5 +77,5 @@ public class WaterfallFragment extends BaseFragment {
         });
     }
 
-
+    protected abstract RecyclerView.Adapter obtainAdapter();
 }

@@ -1,6 +1,7 @@
 package com.csuft.zzc.schoolfellow.base.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -19,12 +20,14 @@ import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
  * Created by wangzhi on 16/3/12.
  */
 public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends View> extends LinearLayout {
-
+    private static final String TAG = "AbsPullToRefresh";
     protected H mRefreshHeaderView;
     protected T mRefreshView;
     private int mTouchSlop;
     private int mLastY;
+    private int mLastX;
     private int mDownY;
+    private int mDownX;
     private float damp;
     private int mPullMaxDis;
     protected ScreenUtil mScreenUtil;
@@ -35,7 +38,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     RefreshStatus refreshStatus = RefreshStatus.INIT;
 
 
-    OnRefreshListener onRefreshListener;
+    OnRefreshListener mOnRefreshListener;
 
     public AbsPullToRefresh(Context context) {
         this(context, null);
@@ -48,13 +51,12 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
     protected void initView() {
         setOrientation(VERTICAL);
-
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
         mScreenUtil = ScreenUtil.instance();
         mPullMaxDis = mScreenUtil.dip2px(120);
         mTopExtraMargin = mScreenUtil.dip2px(0);
 
-        mRefreshHeaderView = createHeaderView();
+        mRefreshHeaderView = createIndicatorView();
         mRefreshView = createRefreshView();
 
         this.addView(mRefreshHeaderView);
@@ -65,33 +67,34 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-
         mParams = (LayoutParams) mRefreshHeaderView.getLayoutParams();
         mTopOffset = mParams.topMargin = -mRefreshHeaderView.getMeasuredHeight() - mTopExtraMargin;
         mParams.gravity = Gravity.CENTER_HORIZONTAL;
         if (nowMargin == 0) {
             nowMargin = mParams.topMargin;
         }
-        Log.i("wangzhi", "layout " + mTopOffset);
+        Log.i(TAG, "layout " + mTopOffset);
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        Log.i("wangzhi", "onTouchEvent " + ev.getAction());
+        ScLog.i(TAG, "onTouchEvent " + ev.getAction());
         if (refreshStatus == RefreshStatus.REFRESHING) {
             return true;
         }
         int nowY = (int) ev.getY();
+        int nowX = (int) ev.getX();
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastY = mDownY = nowY;
+                mLastX = mDownX = nowX;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int dy = nowY - mLastY;
                 if (Math.abs(dy) > 0) {
+                    ScLog.i(TAG, "nowMargin: " + nowMargin + "  mTopOffset: " + mTopOffset + "<>" + refreshViewIsOnTop());
                     if (nowMargin >= mTopOffset && refreshViewIsOnTop()) {
-//                        Log.i("wangzhi", "ACTION_MOVE " + (nowY - mDownY) * damp + "     " + mPullMaxDis);
 //                        if ((nowY - mDownY) * damp <= mPullMaxDis) {
                         int moveTo = (nowY - mDownY);
                         if (moveTo < mTopOffset) {
@@ -100,11 +103,11 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                             moveTo = mPullMaxDis;
                         }
                         float percent = Math.abs(moveTo - mTopOffset) * 1.0f / (mPullMaxDis + Math.abs(mTopOffset));
-                        Log.i("wangzhi", "percent " + percent + "  :   " + (percent * -0.3 + 0.5));
+                        ScLog.i(TAG, "percent " + percent + "  :   " + (percent * -0.3 + 0.5));
                         moveHeader((int) ((nowY - mDownY) * (percent * -0.4 + 0.8)));
 //                        }
                     } else {
-                        Log.i("wangzhi", "redispatch ");
+                        ScLog.i(TAG, "redispatch ");
                         MotionEvent event = MotionEvent.obtain(ev);
                         event.setAction(MotionEvent.ACTION_CANCEL);
                         dispatchTouchEvent(event);
@@ -112,35 +115,32 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                         dispatchTouchEvent(event);
                     }
                     mLastY = nowY;
+                    mLastX = nowX;
                 }
 
                 break;
             case MotionEvent.ACTION_UP:
-                ScLog.i("nowMargin:   " + nowMargin + "  mPullMaxDis:   " + mPullMaxDis);
+                ScLog.i(TAG, "nowMargin:   " + nowMargin + "  mPullMaxDis:   " + mPullMaxDis);
                 if (nowMargin == mPullMaxDis) {
                     refreshStatus = RefreshStatus.REFRESHING;
-                    onRefreshListener.onStartRefresh();
+                    if (mOnRefreshListener != null) {
+                        mOnRefreshListener.onStartRefresh();
+                    }
                     mRefreshHeaderView.refreshAnimation();
                 } else {
                     moveHeader(mTopOffset);
-
                 }
                 break;
         }
         return super.onTouchEvent(ev);
-
 
     }
 
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-//        super.requestDisallowInterceptTouchEvent(disallowIntercept);
         Log.i("wangzhi", "requestDisallowInterceptTouchEvent " + disallowIntercept);
     }
-
-    //
-
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -149,20 +149,25 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         }
         boolean isIntercept = false;
         int nowY = (int) ev.getY();
+        int nowX = (int) ev.getX();
 
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLastY = mDownY = nowY;
+                mLastX = mDownX = nowX;
                 damp = 0.6f;
                 break;
             case MotionEvent.ACTION_MOVE:
                 int dy = nowY - mLastY;
-
-                if (dy > 0 && refreshViewIsOnTop()) {
-                    if ((nowY - mDownY) < mPullMaxDis) {
-                        isIntercept = true;
-                    }
+                int dx = nowX - mLastX;
+                ScLog.i(TAG, "dy: " + dy
+                        + " refreshViewIsOnTop:  " + refreshViewIsOnTop()
+                        + "  " + (nowY - mDownY)
+                        + " mPullMaxDis: " + mPullMaxDis);
+                if (dy > 0 && Math.abs(dy) > Math.abs(dx) && refreshViewIsOnTop()) {
+                    isIntercept = true;
                     mLastY = nowY;
+                    mLastX = nowX;
                 }
 
                 break;
@@ -170,11 +175,15 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                 break;
 
         }
-        Log.i("wangzhi", "onInterceptTouchEvent " + ev.getAction() + "  " + isIntercept);
+        if (isIntercept) {
+            mLastY = mDownY = nowY;
+            mLastX = mDownX = nowX;
+        }
+        ScLog.i(TAG, "onInterceptTouchEvent " + ev.getAction() + "  " + isIntercept);
         return isIntercept ? isIntercept : super.onInterceptTouchEvent(ev);
     }
 
-    protected abstract H createHeaderView();
+    protected abstract H createIndicatorView();
 
 
     protected abstract T createRefreshView();
@@ -194,6 +203,8 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         } else if (this.mRefreshView instanceof ListView) {
             View child = ((ListView) mRefreshView).getChildAt(0);
             return ((ListView) mRefreshView).getFirstVisiblePosition() == 0 && child == null ? true : child.getTop() == 0;
+        } else if (this.mRefreshView instanceof IRefreshAble) {
+            return ((IRefreshAble) mRefreshView).onTop();
         } else {
             return true;
         }
@@ -206,11 +217,12 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
             moveTo = mPullMaxDis;
         }
         float percent = Math.abs(moveTo - mTopOffset) * 1.0f / (mPullMaxDis + Math.abs(mTopOffset));
-        Log.i("wangzhi", "percent " + percent + " moveTo:" + moveTo + " mTopOffset: " + mTopOffset + "   " + mPullMaxDis);
         mRefreshHeaderView.setPercent(percent);
-        onRefreshListener.onPullDown(percent);
+        if (mOnRefreshListener != null) {
+            mOnRefreshListener.onPullDown(percent);
+        }
         refreshStatus = RefreshStatus.PULL_DOWN;
-        Log.i("wangzhi", "movew to " + moveTo);
+        ScLog.i(TAG, "movew to " + moveTo);
         nowMargin = mParams.topMargin = moveTo;
         mRefreshHeaderView.setLayoutParams(mParams);
 
@@ -220,10 +232,13 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         refreshStatus = RefreshStatus.INIT;
         moveHeader(mTopOffset);
         mRefreshHeaderView.abortAnimation();
+        mOnRefreshListener.onRefreshFinish();
+        ScLog.i(TAG, "refreshFinish");
     }
 
+
     public void setOnRefreshListener(AbsPullToRefresh.OnRefreshListener onRefreshListener) {
-        this.onRefreshListener = onRefreshListener;
+        this.mOnRefreshListener = onRefreshListener;
     }
 
     public interface OnRefreshListener {
@@ -237,6 +252,10 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
     public enum RefreshStatus {
         PULL_DOWN, REFRESHING, INIT
+    }
+
+    public interface IRefreshAble {
+        boolean onTop();
     }
 
 }

@@ -11,11 +11,12 @@ import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
+import com.csuft.zzc.schoolfellow.base.utils.BitmapUtil;
 import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
 import com.csuft.zzc.schoolfellow.host.fragment.FragmentFactory;
 import com.csuft.zzc.schoolfellow.host.fragment.HostFragmentTabHost;
 import com.csuft.zzc.schoolfellow.host.fragment.MeFragment;
-import com.csuft.zzc.schoolfellow.host.fragment.SchoolCircleFragment;
+import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class HostActivity extends BaseFragmentActivity {
 
     private List<PageData> tabList = new ArrayList<>();
     private List<Class> fragmentList = new ArrayList<>();
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -79,12 +81,23 @@ public class HostActivity extends BaseFragmentActivity {
 
         }
 
+
     }
 
     public View getTabItemView(PageData data) {
         View itemView = LayoutInflater.from(this).inflate(R.layout.host_tab_item, null);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.tab_item_img);
-        imageView.setImageResource(R.mipmap.ic_launcher);
+        switch (data.title) {
+            case FragmentFactory.PAGER_SCHOOL_LIFE_TITLE:
+                imageView.setImageDrawable(BitmapUtil.getDrawable(this, R.drawable.host_school_circle_bg));
+                break;
+            case FragmentFactory.PAGER_CHAT_TITLE:
+                imageView.setImageDrawable(BitmapUtil.getDrawable(this, R.drawable.host_im_bg));
+                break;
+            case FragmentFactory.PAGER_ME_TITLE:
+                imageView.setImageDrawable(BitmapUtil.getDrawable(this, R.drawable.host_me_bg));
+                break;
+        }
 
         TextView textView = (TextView) itemView.findViewById(R.id.tab_item_txt);
         textView.setText(data.title);

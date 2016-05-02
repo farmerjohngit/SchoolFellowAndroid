@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@mipmap/tabbar_home" android:state_selected="false"/>
+    <item android:drawable="@mipmap/tabbar_home_highlighted" android:state_selected="true"/>
+    <item android:drawable="@mipmap/tabbar_home_highlighted" android:state_pressed="true"/>
+    <item android:drawable="@mipmap/tabbar_home"/>
+</selector><!-- From: file:/Users/liuzongyang/Desktop/mogujie/mgjhost/app/src/main/res/drawable/host_index_shop_icon_bg.xml -->

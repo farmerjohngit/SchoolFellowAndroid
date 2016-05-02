@@ -6,4 +6,18 @@
     <string-array name="pager_name">
         <item>SchoolCircle</item>
     </string-array>
+
+    <string-array name="city">
+        　　
+        <item>相册</item>
+        　　
+        <item>收藏</item>
+        　　
+        <item>海淀区</item>
+        　　
+        <item>漳州市</item>
+        　　
+        <item>朝阳区</item>
+        　　
+    </string-array>
 </resources>

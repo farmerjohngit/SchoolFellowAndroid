@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.circle.data.NewsBannerData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,7 @@ public abstract class AbsAutoScrollLayout<T extends View> extends FrameLayout {
     protected BannerItemFactory itemFactory;
     protected ScreenUtil mScreenUtil;
     protected int defaultItem = 0;
+    protected List<OnItemClickListener> mOnItemClickListeners;
 
 
     public AbsAutoScrollLayout(Context context) {
@@ -68,6 +70,9 @@ public abstract class AbsAutoScrollLayout<T extends View> extends FrameLayout {
         notifyDataSetChanged();
     }
 
+    public List<NewsBannerData.BannerItem> getDataList() {
+        return mDataList;
+    }
 
     protected int getBannerCount() {
         return mDataList == null ? 0 : mDataList.size();
@@ -78,6 +83,17 @@ public abstract class AbsAutoScrollLayout<T extends View> extends FrameLayout {
     protected abstract View makeIndicatorView();
 
     protected abstract T obtainContainer();
+
+    public void addOnItemClickListener(OnItemClickListener listener) {
+        if (mOnItemClickListeners == null) {
+            mOnItemClickListeners = new ArrayList<>();
+        }
+        mOnItemClickListeners.add(listener);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position, Object obj);
+    }
 
     public interface BannerItemFactory {
         View createItemView(NewsBannerData.BannerItem data);

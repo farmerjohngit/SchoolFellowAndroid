@@ -2,19 +2,57 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#c5c5c5"
+                android:background="#f2f2f2"
                 android:orientation="vertical">
 
+    <com.csuft.zzc.schoolfellow.base.view.TopBar
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/white"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="联系人"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="我的"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:text="设置"
+            android:textSize="14sp"/>
+
+    </com.csuft.zzc.schoolfellow.base.view.TopBar>
+
     <LinearLayout
+        android:id="@+id/top_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_below="@+id/top_bar"
+        android:layout_marginTop="12dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="1px">
+            android:layout_height="72dp"
+            android:layout_marginBottom="2px"
+            android:background="@color/white">
 
             <com.csuft.zzc.schoolfellow.base.view.WebImageView
                 android:id="@+id/head_img"
@@ -27,16 +65,18 @@
                 android:id="@+id/name_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:layout_toLeftOf="@+id/time_txt"
                 android:layout_toRightOf="@+id/head_img"
                 android:text="酸梅汤喝我"
                 android:textSize="@dimen/user_name_text_size"/>
 
             <TextView
-                android:id="@+id/content_txt"
+                android:id="@+id/introduction_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_txt"
+                android:layout_marginTop="6dp"
                 android:layout_toLeftOf="@+id/time_txt"
                 android:layout_toRightOf="@+id/head_img"
                 android:ellipsize="end"
@@ -47,9 +87,11 @@
             <ImageView
                 android:id="@+id/me_more"
                 android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginRight="8dp"
+                android:src="@mipmap/mine_icon_membership_arrow"
                 />
 
 
@@ -58,7 +100,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
+            android:background="@color/white"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -66,7 +109,7 @@
                 style="@style/user_relation_information_layout_style">
 
                 <TextView
-
+                    android:id="@+id/weibo_num_text"
                     style="@style/user_relation_information_style"
                     android:text="10"/>
 
@@ -79,6 +122,7 @@
                 style="@style/user_relation_information_layout_style">
 
                 <TextView
+                    android:id="@+id/care_num_text"
                     style="@style/user_relation_information_style"
                     android:text="91"/>
 
@@ -91,6 +135,7 @@
                 style="@style/user_relation_information_layout_style">
 
                 <TextView
+                    android:id="@+id/follow_num_text"
                     style="@style/user_relation_information_style"
                     android:text="17"/>
 
@@ -103,11 +148,26 @@
 
     </LinearLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_me"
+        android:layout_marginTop="20dp">
+
+        <include
+            layout="@layout/setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </ScrollView>
+
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

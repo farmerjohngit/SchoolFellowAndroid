@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+    >
+
+    <TextView
+        android:id="@+id/news_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:gravity="center_horizontal"
+        android:text="title"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/news_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/news_title"
+        android:gravity="center_horizontal"
+        android:text="subtitle"
+        android:textSize="14sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/news_para"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/news_time"
+        android:layout_below="@+id/news_subtitle"></android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:gravity="right"
+        android:id="@+id/news_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:text="time"
+        android:textSize="10sp"/>
+
+</RelativeLayout>

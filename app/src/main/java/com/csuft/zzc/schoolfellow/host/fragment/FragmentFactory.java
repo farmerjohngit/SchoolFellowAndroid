@@ -1,6 +1,7 @@
 package com.csuft.zzc.schoolfellow.host.fragment;
 
 import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
+import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
 import com.csuft.zzc.schoolfellow.host.PageData;
 import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
 
