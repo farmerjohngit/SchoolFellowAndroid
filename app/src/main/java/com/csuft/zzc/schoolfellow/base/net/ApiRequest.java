@@ -1,8 +1,9 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
 import com.csuft.zzc.schoolfellow.base.data.BaseData;
+import com.squareup.okhttp.MediaType;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,8 +17,10 @@ public class ApiRequest {
     private String url;
     private int method;
     private Map<String, String> params;
+    private List<String> fileParams;
     private CallBack callBack;
     private Class<? extends BaseData> callBackClazz;
+    private MediaType type;
 
     public ApiRequest(Builder builder) {
         this.url = builder.url;
@@ -25,6 +28,8 @@ public class ApiRequest {
         this.callBack = builder.callBack;
         this.callBackClazz = builder.callBackClazz;
         this.method = builder.method;
+        this.fileParams = builder.fileParams;
+        this.type = builder.type;
     }
 
     public CallBack getCallBack() {
@@ -43,6 +48,14 @@ public class ApiRequest {
         return params;
     }
 
+    public List<String> getFileParams() {
+        return fileParams;
+    }
+
+    public MediaType getType() {
+        return type;
+    }
+
     public Class<? extends BaseData> getCallBackClazz() {
         return callBackClazz;
     }
@@ -50,6 +63,8 @@ public class ApiRequest {
     public static class Builder {
 
         private String url;
+        private MediaType type;
+        private List<String> fileParams;
         private int method;
         private CallBack callBack;
         private Map<String, String> params;
@@ -72,6 +87,16 @@ public class ApiRequest {
 
         public Builder callback(CallBack callBack) {
             this.callBack = callBack;
+            return this;
+        }
+
+        public Builder type(MediaType type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder fileParams(List<String> fileParams) {
+            this.fileParams = fileParams;
             return this;
         }
 

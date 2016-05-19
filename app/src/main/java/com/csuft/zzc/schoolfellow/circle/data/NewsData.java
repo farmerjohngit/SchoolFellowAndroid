@@ -28,6 +28,9 @@ public class NewsData extends BaseData {
 
 
         public String getFirstForSpecType(int type) {
+            if (paragraphs == null) {
+                return null;
+            }
             for (NewsData.Paragraph paragraph : paragraphs) {
                 if (paragraph.contentType == type
                         && paragraph.content != null

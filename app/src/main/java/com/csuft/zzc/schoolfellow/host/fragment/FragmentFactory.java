@@ -4,6 +4,7 @@ import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
 import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
 import com.csuft.zzc.schoolfellow.host.PageData;
 import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
+import com.csuft.zzc.schoolfellow.me.MeFragment;
 
 /**
  * Created by wangzhi on 16/3/9.

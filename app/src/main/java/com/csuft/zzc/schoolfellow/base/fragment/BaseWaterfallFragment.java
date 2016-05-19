@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuft.zzc.schoolfellow.R;
-import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
@@ -20,10 +19,11 @@ import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 /**
  * Created by wangzhi on 16/3/11.
  */
-public abstract class WaterBasefallFragment extends BaseFragment {
+public abstract class BaseWaterfallFragment extends BaseFragment {
 
-    private static final String TAG = "WaterBasefallFragment";
-    RecyclerView.Adapter mAdapter;
+    private static final String TAG = "BaseWaterfallFragment";
+    protected RecyclerView.Adapter mAdapter;
+    protected WaterFallRecyclerView mRecyclerView;
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -38,8 +38,8 @@ public abstract class WaterBasefallFragment extends BaseFragment {
         ScLog.i("onViewStateRestored");
     }
 
-//    public static WaterBasefallFragment create(RecyclerView.Adapter adapter) {
-//        WaterBasefallFragment waterBasefallFragment = new WaterBasefallFragment();
+//    public static BaseWaterfallFragment create(RecyclerView.Adapter adapter) {
+//        BaseWaterfallFragment waterBasefallFragment = new BaseWaterfallFragment();
 //        waterBasefallFragment.mAdapter = adapter;
 //        return waterBasefallFragment;
 //    }
@@ -53,28 +53,15 @@ public abstract class WaterBasefallFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        WaterFallRecyclerView recyclerView = (WaterFallRecyclerView) mContentView.findViewById(R.id.id_stick_inner_scroll);
-        recyclerView.setAdapter(mAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mRecyclerView = (WaterFallRecyclerView) mContentView.findViewById(R.id.id_stick_inner_scroll);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         reqData();
     }
 
     public void reqData() {
         ScLog.i("-----reqData-------");
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/news", null, NewsData.class, new CallBack<NewsData>() {
-            @Override
-            public void onSuccess(NewsData data) {
-                ScLog.i("req news onSuccess " + mAdapter);
-                NewsWaterFallAdapter newsWaterFallAdapter = (NewsWaterFallAdapter) mAdapter;
-                newsWaterFallAdapter.setItemDataList(data.result.newsList);
-                newsWaterFallAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFailure(int code, String error) {
-                ScLog.i("req news onFailure");
-            }
-        });
     }
 
     protected abstract RecyclerView.Adapter obtainAdapter();

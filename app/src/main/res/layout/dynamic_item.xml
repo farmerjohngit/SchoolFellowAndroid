@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+
+              android:layout_marginTop="6dp"
+              android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_marginTop="6dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <com.csuft.zzc.schoolfellow.base.view.WebImageView
+            android:id="@+id/head_img"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+
+            android:layout_marginRight="14dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/head_img"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name_txt"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="name"
+                android:textSize="@dimen/user_name_text_size"/>
+
+            <TextView
+                android:id="@+id/time_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="content"
+                android:textColor="#c5c5c5"/>
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_marginRight="6dp"
+            android:background="@android:color/transparent"
+            android:id="@+id/concern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/card_icon_favorite"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.csuft.zzc.schoolfellow.base.view.WebImageView
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:id="@+id/publishImg"
+        android:layout_width="240dp"
+        android:layout_height="240dp"/>
+</LinearLayout>

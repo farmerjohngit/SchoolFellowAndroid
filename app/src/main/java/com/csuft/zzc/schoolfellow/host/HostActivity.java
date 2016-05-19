@@ -12,11 +12,11 @@ import android.widget.TextView;
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
 import com.csuft.zzc.schoolfellow.base.utils.BitmapUtil;
-import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
+import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
 import com.csuft.zzc.schoolfellow.host.fragment.FragmentFactory;
 import com.csuft.zzc.schoolfellow.host.fragment.HostFragmentTabHost;
-import com.csuft.zzc.schoolfellow.host.fragment.MeFragment;
-import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
+import com.csuft.zzc.schoolfellow.me.MeFragment;
+import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +73,22 @@ public class HostActivity extends BaseFragmentActivity {
 
         mTabHost.setup(this, getSupportFragmentManager(), R.id.host_content);
         mTabHost.getTabWidget().setDividerDrawable(null);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+//                switch (tabId) {
+//                    case FragmentFactory.PAGER_SCHOOL_LIFE_TITLE:
+//                        break;
+//                    case FragmentFactory.PAGER_CHAT_TITLE:
+//                        break;
+//                    case FragmentFactory.PAGER_ME_TITLE:
+//                        break;
+//                }
+//                if (!UserManager.getInstance().isLogin()) {
+//                    startActivity(new Intent(HostActivity.this, LoginAct.class));
+//                }
+            }
+        });
         for (int i = 0; i < tabList.size(); i++) {
             PageData pageData = tabList.get(i);
             TabHost.TabSpec tabSpec = mTabHost.newTabSpec(pageData.title).setIndicator(getTabItemView(pageData));

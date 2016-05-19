@@ -1,7 +1,6 @@
 package com.csuft.zzc.schoolfellow.base.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;

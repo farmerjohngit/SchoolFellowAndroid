@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by wangzhi on 16/4/28.
  */
-public class NewsWaterFallAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class NewsWaterFallAdapter extends RecyclerView.Adapter<NewsViewHolder> {
     Context mContext;
     private List<NewsData.NewsItem> mItemDataList;
 
@@ -30,14 +30,14 @@ public class NewsWaterFallAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NewsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View root = LayoutInflater.from(mContext).inflate(R.layout.news_item, parent, false);
-        ViewHolder viewHolder = new ViewHolder(root);
+        NewsViewHolder viewHolder = new NewsViewHolder(root);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(NewsViewHolder holder, int position) {
         final NewsData.NewsItem info = mItemDataList.get(position);
         holder.titleTxt.setText(info.title);
         holder.contentTxt.setText(info.getFirstForSpecType(NewsData.Paragraph.TEXT_TYPE));
@@ -75,9 +75,9 @@ public class NewsWaterFallAdapter extends RecyclerView.Adapter<ViewHolder> {
 
 }
 
-class ViewHolder extends RecyclerView.ViewHolder {
+class NewsViewHolder extends RecyclerView.ViewHolder {
 
-    public ViewHolder(View itemView) {
+    public NewsViewHolder(View itemView) {
         super(itemView);
         headImg = (WebImageView) itemView.findViewById(R.id.news_pic);
         titleTxt = (TextView) itemView.findViewById(R.id.news_title);

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/user_basic_info_txt"
+                android:text="姓名"
+                />
+
+            <TextView
+                android:id="@+id/name_txt"
+                style="@style/user_basic_info_txt"
+                android:text="name"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/user_basic_info_txt"
+                android:text="身份"
+                />
+
+            <TextView
+                android:id="@+id/rank_txt"
+                style="@style/user_basic_info_txt"
+                android:text="学生"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+
+                style="@style/user_basic_info_txt"
+                android:text="入校年份"
+                />
+
+            <TextView
+                android:id="@+id/edu_start_txt"
+                style="@style/user_basic_info_txt"
+                android:text="2012"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/user_basic_info_txt"
+                android:text="专业"
+                />
+
+            <TextView
+                android:id="@+id/profession_txt"
+                style="@style/user_basic_info_txt"
+                android:text="计算机科学与技术"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/user_basic_info_txt"
+                android:text="班级"
+                />
+
+            <TextView
+                android:id="@+id/class_txt"
+                style="@style/user_basic_info_txt"
+                android:text="2"/>
+            <TextView
+                style="@style/user_basic_info_txt"
+                android:text="班"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

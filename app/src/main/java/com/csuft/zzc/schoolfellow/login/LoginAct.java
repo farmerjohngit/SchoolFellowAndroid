@@ -12,10 +12,15 @@ public class LoginAct extends ReactNativeBaseAct {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+        }
     }
 
     @Override
     public String getAppName() {
-        return "SchoolFellow_Login";
+        return "SchoolFellow_Reg";
     }
+
+
 }

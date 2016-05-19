@@ -34,6 +34,11 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
     }
 
     @Override
+    protected void autoScrollInternal() {
+        mContainer.setCurrentItem(mContainer.getCurrentItem() + 1, true);
+    }
+
+    @Override
     protected View makeIndicatorView() {
         BannerDotView bannerDotView = (BannerDotView) mInflater.inflate(R.layout.banner_dot_view, mIndicatorContainer, false);
         Log.i("wangzhi", String.valueOf(bannerDotView.getLayoutParams()));
@@ -60,11 +65,11 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
             @Override
             public void onPageSelected(final int position) {
-                ScLog.i("onPageSelected " + position);
+//                ScLog.i("onPageSelected " + position);
                 viewPager.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ScLog.i("onPageSelected  delay " + position);
+//                        ScLog.i("onPageSelected  delay " + position);
                         if (position == 0) {
                             viewPager.setCurrentItem(getBannerCount(), false);
                         } else if (position == getBannerCount() + 1) {
@@ -113,7 +118,7 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
                 return null;
             }
             position = mapIndex(position);
-           final NewsBannerData.BannerItem data = mDataList.get(position);
+            final NewsBannerData.BannerItem data = mDataList.get(position);
 
             View item = null;
             if (itemFactory != null) {
@@ -130,7 +135,7 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
                         return;
                     }
                     for (OnItemClickListener listener : mOnItemClickListeners) {
-                        listener.onItemClick(v, finalPosition,data);
+                        listener.onItemClick(v, finalPosition, data);
                     }
 
                 }
@@ -153,7 +158,7 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
     protected View createOwnItemView(NewsBannerData.BannerItem data) {
         WebImageView item = new WebImageView(getContext());
         item.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        item.setImageUrl(data.imgUrl, ScreenUtil.instance().getScreenWidth(), ScreenUtil.instance().dip2px(100));
+        item.setImageUrl(data.imgUrl, ScreenUtil.instance().getScreenWidth(), ScreenUtil.instance().dip2px(120));
         item.setBackgroundColor(Color.WHITE);
         return item;
     }

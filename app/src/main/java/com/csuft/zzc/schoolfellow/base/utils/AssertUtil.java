@@ -1,8 +1,5 @@
 package com.csuft.zzc.schoolfellow.base.utils;
 
-import android.content.Context;
-import android.content.Intent;
-
 /**
  * Created by wangzhi on 16/5/3.
  */

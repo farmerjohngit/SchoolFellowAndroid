@@ -17,17 +17,18 @@ import android.view.ViewGroup;
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.data.DataFactory;
 import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
-import com.csuft.zzc.schoolfellow.base.fragment.WaterBasefallFragment;
+import com.csuft.zzc.schoolfellow.base.fragment.BaseWaterfallFragment;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.AbsAutoScrollLayout;
 import com.csuft.zzc.schoolfellow.base.view.AbsPullToRefresh;
 import com.csuft.zzc.schoolfellow.base.view.PullToStickNavView;
+import com.csuft.zzc.schoolfellow.base.view.TopBar;
 import com.csuft.zzc.schoolfellow.circle.act.NewsDetailAct;
 import com.csuft.zzc.schoolfellow.circle.data.NewsBannerData;
 import com.csuft.zzc.schoolfellow.circle.data.SchoolCirclePagerData;
-import com.csuft.zzc.schoolfellow.circle.fragment.NewsWaterFallFragment;
+import com.csuft.zzc.schoolfellow.publish.PublishAct;
 
 import java.util.List;
 
@@ -61,6 +62,13 @@ public class SchoolCircleFragment extends BaseFragment {
     @Override
     protected void initView() {
         initData();
+        TopBar topBar = (TopBar) findViewById(R.id.top_bar);
+        topBar.setOnRightClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), PublishAct.class));
+            }
+        });
         mPullToRefresh = (PullToStickNavView) mContentView.findViewById(R.id.pullToRefresh);
         mPullToRefresh.setOnRefreshListener(new AbsPullToRefresh.OnRefreshListener() {
             @Override
@@ -93,7 +101,7 @@ public class SchoolCircleFragment extends BaseFragment {
 
         });
 //        mScrollPager.setBannerData(DataFactory.createBannerDataList(2));
-
+        mScrollPager.startAutoScroll();
 
         ViewPager pager = (ViewPager) mContentView.findViewById(R.id.id_stick_pager);
 
@@ -116,18 +124,32 @@ public class SchoolCircleFragment extends BaseFragment {
 
     public void reqData() {
         reqBannerData();
+        reqWaterData();
+
+
     }
 
     public void reqDataWithCache() {
         reqData();
     }
 
+    private static final String TAG = "SchoolCircleFragment";
+    public void reqWaterData(){
+        for(Fragment fragment:getFragmentManager().getFragments()){
+            if(fragment instanceof BaseWaterfallFragment ){
+                ScLog.i(TAG,"reqWaterData");
+                BaseWaterfallFragment baseWaterfallFragment= (BaseWaterfallFragment) fragment;
+                baseWaterfallFragment.reqData();
+            }
+           
+        }
+    }
     public void reqBannerData() {
         BaseApi.getInstance().get(BaseApi.HOST_URL + "/news_banner", null, NewsBannerData.class, new CallBack<NewsBannerData>() {
 
             @Override
             public void onSuccess(NewsBannerData data) {
-                ScLog.i("onSucces " + data.result.bannerList.size());
+//                ScLog.i("onSucces " + data.result.bannerList.size());
                 mScrollPager.setBannerData(data.result.bannerList);
                 mPullToRefresh.refreshFinish();
             }
@@ -150,8 +172,13 @@ public class SchoolCircleFragment extends BaseFragment {
 
         @Override
         public Fragment getItem(int position) {
-            WaterBasefallFragment waterBasefallFragment = new NewsWaterFallFragment();
-            return waterBasefallFragment;
+            BaseWaterfallFragment baseWaterfallFragment = null;
+            if (position == 0) {
+                baseWaterfallFragment = new NewsWaterFallFragment();
+            } else {
+                baseWaterfallFragment = new DynamicWaterFallFragment();
+            }
+            return baseWaterfallFragment;
         }
 
         @Override

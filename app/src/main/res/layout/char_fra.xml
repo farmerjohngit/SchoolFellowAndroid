@@ -14,6 +14,7 @@
         >
 
         <Button
+            android:id="@+id/contact_btn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
@@ -25,50 +26,14 @@
             />
 
         <ImageView
+            android:id="@+id/add_friend"
             android:layout_width="15dp"
             android:layout_height="match_parent"
-            android:src="@mipmap/plus_alt"/>
+            android:src="@mipmap/icon_add_friends"/>
     </com.csuft.zzc.schoolfellow.base.view.TopBar>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:background="#c5c5c5"
-        android:paddingBottom="6dp"
-        android:paddingLeft="14dp"
-        android:paddingRight="14dp"
-        android:paddingTop="6dp"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/corner_bg"
-            android:orientation="horizontal"
-            >
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/search"/>
-
-            <EditText
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                android:hint="搜索联系人"
-                android:paddingBottom="1dp"
-                android:paddingTop="1dp"
-                android:textSize="10sp"/>
-        </LinearLayout>
-    </LinearLayout>
+    <include layout="@layout/search_view"/>
 
     <com.csuft.zzc.schoolfellow.base.view.PullToListView
         android:id="@+id/pullToRefresh"

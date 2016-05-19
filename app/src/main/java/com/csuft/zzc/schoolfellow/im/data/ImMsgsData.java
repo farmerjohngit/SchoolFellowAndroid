@@ -5,7 +5,7 @@ import com.csuft.zzc.schoolfellow.base.data.BaseData;
 
 import java.util.List;
 
-public class ImMsgData extends BaseData {
+public class ImMsgsData extends BaseData {
 
     public Result result;
 

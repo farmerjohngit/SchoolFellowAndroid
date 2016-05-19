@@ -1,10 +1,9 @@
-package com.csuft.zzc.schoolfellow.host.fragment;
+package com.csuft.zzc.schoolfellow.me;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.res.ResourcesCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,10 @@ import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.EasyToast;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
-import com.csuft.zzc.schoolfellow.host.data.UserData;
+import com.csuft.zzc.schoolfellow.im.act.ContactPersonAct;
+import com.csuft.zzc.schoolfellow.login.LoginAct;
+import com.csuft.zzc.schoolfellow.search.QueryUserData;
+import com.csuft.zzc.schoolfellow.user.UserManager;
 
 import java.util.HashMap;
 
@@ -36,32 +38,12 @@ public class MeFragment extends BaseFragment {
     private TextView mWbNumTxt;
     private TextView mCareNumTxt;
     private TextView mFollowTxt;
+    private Button mExitBtn;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Drawable textDrawable = null;
-        Drawable actionDrawable = null;
-
-        textDrawable = ResourcesCompat.getDrawable(getActivity().getResources(), R.mipmap.net, null);
-        actionDrawable = ResourcesCompat.getDrawable(getActivity().getResources(), R.mipmap.ok, null);
-
-        EasyToast.ToastStyle toastStyle = new EasyToast.ToastStyle();
-        toastStyle.textSize = 16;
-        toastStyle.bgColor = Color.WHITE;
-//        toastStyle.textIcon = textDrawable;
-        toastStyle.actionIcon = actionDrawable;
-        toastStyle.maxTextLen = 10;
-//        toastStyle.textGravity= Gravity.C;
-        EasyToast.register("default", toastStyle);
-
-        textDrawable = ResourcesCompat.getDrawable(getActivity().getResources(), R.mipmap.ok, null);
-        actionDrawable = ResourcesCompat.getDrawable(getActivity().getResources(), R.mipmap.ok, null);
-//        toastStyle = new EasyToast.ToastStyle(Color.WHITE, textDrawable
-//                , actionDrawable, 16,0);
-        //        EasyToast.register("default1", toastStyle);
     }
 
 
@@ -89,14 +71,29 @@ public class MeFragment extends BaseFragment {
         mWbNumTxt = (TextView) mContentView.findViewById(R.id.weibo_num_text);
         mFollowTxt = (TextView) mContentView.findViewById(R.id.follow_num_text);
         mCareNumTxt = (TextView) mContentView.findViewById(R.id.care_num_text);
+        mExitBtn = (Button) findViewById(R.id.exit_btn);
         mContentView.findViewById(R.id.layout1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "haha", Toast.LENGTH_SHORT).show();
             }
         });
+        findViewById(R.id.go_contact).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ContactPersonAct.class));
+            }
+        });
 
         headImg = (WebImageView) mContentView.findViewById(R.id.head_img);
+        mExitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UserManager.getInstance().logout();
+
+                startActivity(new Intent(getActivity(), LoginAct.class));
+            }
+        });
         final Button button = (Button) mContentView.findViewById(R.id.btn);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -114,17 +111,20 @@ public class MeFragment extends BaseFragment {
 
     public void reqData() {
         HashMap<String, String> hashMap = new HashMap();
-        hashMap.put("userId", "20124609");
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/user_info", hashMap, UserData.class, new CallBack<UserData>() {
+        hashMap.put("userName", UserManager.getInstance().getUser().userName);
+        hashMap.put("wantData", "1");
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/user_info", hashMap, QueryUserData.class, new CallBack<QueryUserData>() {
             @Override
-            public void onSuccess(UserData data) {
-                ScLog.i(TAG, "onSuccess");
-                nameTxt.setText(data.name);
-                introductionTxt.setText(data.introduction);
-                headImg.setImageUrl(data.avatar, true);
-                mFollowTxt.setText(data.followerNums);
-                mCareNumTxt.setText(data.careNum);
-                mWbNumTxt.setText(data.weiboNum);
+            public void onSuccess(QueryUserData data) {
+                ScLog.i(TAG, "onSuccess " + data.result.user.avatar);
+                nameTxt.setText(data.result.user.name);
+                if (!TextUtils.isEmpty(data.result.user.introduction)) {
+                    introductionTxt.setText(data.result.user.introduction);
+                }
+                headImg.setImageUrl(data.result.user.avatar, true);
+                mFollowTxt.setText(data.result.user.followerNum);
+                mCareNumTxt.setText(data.result.user.careNum);
+                mWbNumTxt.setText(data.result.user.weiboNum);
             }
 
             @Override

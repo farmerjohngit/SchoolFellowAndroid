@@ -1,7 +1,5 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
-import com.squareup.picasso.RequestCreator;
-
 import java.io.IOException;
 
 /**

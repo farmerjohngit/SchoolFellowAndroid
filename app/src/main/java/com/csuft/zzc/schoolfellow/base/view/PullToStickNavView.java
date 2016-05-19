@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ListView;
 
 import com.csuft.zzc.schoolfellow.R;
 
@@ -27,6 +26,7 @@ public class PullToStickNavView extends AbsPullToRefresh<RefreshIndicator, Stick
         return refreshIndicator;
     }
 
+    //todo
     @Override
     protected StickNavLayout createRefreshView() {
         return (StickNavLayout) LayoutInflater.from(getContext()).inflate(R.layout.school_circle_fra_test, null);

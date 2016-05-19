@@ -2,6 +2,7 @@ package com.csuft.zzc.schoolfellow.base.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -35,4 +36,8 @@ public abstract class BaseFragment extends Fragment {
     protected abstract View createContentView(LayoutInflater inflater, @Nullable ViewGroup container);
 
     protected abstract void initView();
+
+    public View findViewById(@IdRes int id) {
+        return mContentView == null ? null : mContentView.findViewById(id);
+    }
 }

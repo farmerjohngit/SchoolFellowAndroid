@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 
 /**
+ * 一个封装的很垃圾的topbar
  * Created by wangzhi on 16/3/10.
  */
 public class TopBar extends LinearLayout {
@@ -133,5 +134,23 @@ public class TopBar extends LinearLayout {
 
     public void setLayoutParamsFactory(LayoutParamsFactory layoutParamsFactory) {
         mLayoutParamsFactory = layoutParamsFactory;
+    }
+
+    public void setOnLeftClickListener(OnClickListener listener) {
+        if (mLeftView != null) {
+            mLeftView.setOnClickListener(listener);
+        }
+    }
+
+    public void setOnRightClickListener(OnClickListener listener) {
+        if (mRightView != null) {
+            mRightView.setOnClickListener(listener);
+        }
+    }
+
+    public void setOnCenterClickListener(OnClickListener listener) {
+        if (mCenterView != null) {
+            mCenterView.setOnClickListener(listener);
+        }
     }
 }

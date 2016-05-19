@@ -1,6 +1,8 @@
 package com.csuft.zzc.schoolfellow.base.view;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,7 +31,19 @@ public abstract class AbsAutoScrollLayout<T extends View> extends FrameLayout {
     protected ScreenUtil mScreenUtil;
     protected int defaultItem = 0;
     protected List<OnItemClickListener> mOnItemClickListeners;
-
+    protected Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    autoScrollInternal();
+                    mHandler.sendEmptyMessageDelayed(1,splitTime);
+                    break;
+            }
+        }
+    };
+    protected int splitTime = 3000;
 
     public AbsAutoScrollLayout(Context context) {
         super(context);
@@ -60,6 +74,11 @@ public abstract class AbsAutoScrollLayout<T extends View> extends FrameLayout {
 
     }
 
+    public void startAutoScroll() {
+        mHandler.sendEmptyMessageDelayed(1, splitTime);
+    }
+
+    protected abstract void autoScrollInternal();
 
     public void setBannerData(List<NewsBannerData.BannerItem> data) {
         mDataList = data;

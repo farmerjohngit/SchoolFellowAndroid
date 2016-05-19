@@ -1,6 +1,5 @@
 package com.csuft.zzc.schoolfellow.react;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
@@ -30,6 +29,7 @@ public abstract class ReactNativeBaseAct extends BaseFragmentActivity implements
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModuleName("index.android")
                 .addPackage(new MainReactPackage())
+                .addPackage(new LoginReactPackage())
                 .setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();

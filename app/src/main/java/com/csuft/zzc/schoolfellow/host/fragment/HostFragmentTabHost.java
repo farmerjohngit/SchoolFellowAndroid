@@ -187,7 +187,7 @@ public class HostFragmentTabHost extends TabHost implements TabHost.OnTabChangeL
             mRealTabContent = (FrameLayout) findViewById(mContainerId);
             if (mRealTabContent == null) {
                 throw new IllegalStateException(
-                        "No tab content FrameLayout found for id " + mContainerId);
+                        "No tab content FrameLayout found for userName " + mContainerId);
             }
         }
     }

@@ -3,7 +3,6 @@
 
 <com.csuft.zzc.schoolfellow.base.view.StickNavLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:stick="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -18,14 +17,14 @@
         <com.csuft.zzc.schoolfellow.base.view.AutoScrollViewPager
             android:id="@+id/scrollPager"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="120dp"
             android:background="@android:color/darker_gray"/>
     </LinearLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/id_stick_nav"
         android:layout_width="match_parent"
-        android:layout_height="45dp"/>
+        android:layout_height="50dp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/id_stick_pager"

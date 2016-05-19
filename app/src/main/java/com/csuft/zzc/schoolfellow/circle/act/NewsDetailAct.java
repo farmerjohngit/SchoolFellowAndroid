@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
-import com.csuft.zzc.schoolfellow.base.data.BaseData;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
@@ -124,8 +123,8 @@ public class NewsDetailAct extends BaseFragmentActivity {
             super(itemView);
             img = (WebImageView) itemView.findViewById(R.id.para_img);
             txt = (TextView) itemView.findViewById(R.id.para_txt);
-//            timeTxt = (TextView) itemView.findViewById(R.id.news_time);
-//            contentTxt = (TextView) itemView.findViewById(R.id.news_pre);
+//            timeTxt = (TextView) itemView.findViewById(R.userName.news_time);
+//            contentTxt = (TextView) itemView.findViewById(R.userName.news_pre);
         }
 
         public WebImageView img;

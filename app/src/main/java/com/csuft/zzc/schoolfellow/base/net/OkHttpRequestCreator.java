@@ -1,11 +1,20 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
+import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,9 +25,10 @@ public class OkHttpRequestCreator implements IRequestCreator {
     private static final String TAG = "OkHttpRequestCreator";
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 
     @Override
-    public Object createGetRequest(HttpRequest httpRequest) {
+    public Object createRequest(HttpRequest httpRequest) {
         Request request = null;
         if (httpRequest.getMethod() == ApiRequest.GET) {
             request = geneGetRequest(httpRequest);
@@ -29,7 +39,6 @@ public class OkHttpRequestCreator implements IRequestCreator {
     }
 
 
-    //todo 拼接url等
     public Request geneGetRequest(HttpRequest apiRequest) {
         Map<String, String> map = apiRequest.getQueryParams();
         String url = apiRequest.getUrl();
@@ -51,7 +60,7 @@ public class OkHttpRequestCreator implements IRequestCreator {
                 }
                 url += key + "=" + value;
                 if (iterator.hasNext()) {
-                    url+="&";
+                    url += "&";
                 }
             }
         }
@@ -62,8 +71,34 @@ public class OkHttpRequestCreator implements IRequestCreator {
 
     //todo
     public Request genePostRequest(HttpRequest apiRequest) {
-//        RequestBody body = RequestBody.create(JSON, "");
-//        return new Request.Builder().url(apiRequest.getUrl()).post(body).build();
-        return null;
+        Map<String, String> map = apiRequest.getFormParams();
+        if (map == null) {
+            return new Request.Builder().url(apiRequest.getUrl()).build();
+        }
+        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        RequestBody body = null;
+        if (apiRequest.getType() != null && apiRequest.getFileFormParams() != null) {
+            MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = iterator.next();
+                builder.addFormDataPart(entry.getKey(), entry.getValue());
+            }
+            for (String filePath : apiRequest.getFileFormParams()) {
+                builder.addFormDataPart("upload", filePath, RequestBody.create(apiRequest.getType(), new File(filePath)));
+            }
+            body = builder.build();
+        } else {
+
+            FormEncodingBuilder builder = new FormEncodingBuilder();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> entry = iterator.next();
+                builder.add(entry.getKey(), entry.getValue());
+            }
+            body = builder.build();
+        }
+
+        return new Request.Builder().url(apiRequest.getUrl()).post(body).build();
     }
+
+
 }

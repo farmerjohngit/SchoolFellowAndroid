@@ -1,7 +1,9 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
 import com.csuft.zzc.schoolfellow.base.data.BaseData;
+import com.squareup.okhttp.MediaType;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Map;
  */
 public class BaseApi {
 
-//            public static final String HOST_URL = "http://104.224.133.227:3000";
+    //            public static final String HOST_URL = "http://104.224.133.227:3000";
     public static final String HOST_URL = "http://192.168.56.1:3000";
     AbsNetExecutorFactory netExecutorFactory;
 
@@ -54,7 +56,33 @@ public class BaseApi {
 
     public <T extends BaseData> void post(String url, Map<String, String> params, Class<T> clazz, CallBack<T> callBack) {
 
+//        ApiRequest apiRequest = new ApiRequest.Builder()
+//                .method(ApiRequest.POST)
+//                .url(url)
+//                .params(params)
+//                .callback(callBack)
+//                .callBackClazz(clazz)
+//                .build();
+//        request(apiRequest);
+        post(url, params, null, null, clazz, callBack);
+    }
 
+    public <T extends BaseData> void postWithImage(String url, Map<String, String> params, List<String> fileParams, Class<T> clazz, CallBack<T> callBack) {
+        post(url, params, fileParams, OkHttpRequestCreator.MEDIA_TYPE_PNG, clazz, callBack);
+    }
+
+    public <T extends BaseData> void post(String url, Map<String, String> params, List<String> fileParams, MediaType type, Class<T> clazz, CallBack<T> callBack) {
+
+        ApiRequest apiRequest = new ApiRequest.Builder()
+                .method(ApiRequest.POST)
+                .url(url)
+                .type(type)
+                .fileParams(fileParams)
+                .params(params)
+                .callback(callBack)
+                .callBackClazz(clazz)
+                .build();
+        request(apiRequest);
     }
 
     public void request(ApiRequest apiRequest) {
@@ -68,8 +96,6 @@ public class BaseApi {
         enqueueRequest(apiRequest);
     }
 
-    public void apiReqToRealReq() {
-    }
 
     public void enqueueRequest(ApiRequest apiRequest) {
         INetExecutor netExecutor = netExecutorFactory.creatExector();

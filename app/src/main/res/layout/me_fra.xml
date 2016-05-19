@@ -15,6 +15,7 @@
         android:paddingRight="2dp">
 
         <Button
+            android:id="@+id/go_contact"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
@@ -55,11 +56,13 @@
             android:background="@color/white">
 
             <com.csuft.zzc.schoolfellow.base.view.WebImageView
+
                 android:id="@+id/head_img"
                 android:layout_width="45dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="20dp"/>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
 
             <TextView
                 android:id="@+id/name_txt"
@@ -81,7 +84,7 @@
                 android:layout_toRightOf="@+id/head_img"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="简介：二十岁的男人有太多的眼泪"
+                android:text="总要写点什么吧～"
                 android:textColor="#c5c5c5"/>
 
             <ImageView
@@ -115,7 +118,7 @@
 
                 <TextView
                     style="@style/user_relation_information_style"
-                    android:text="微博"/>
+                    android:text="动态"/>
             </LinearLayout>
 
             <LinearLayout
@@ -128,7 +131,7 @@
 
                 <TextView
                     style="@style/user_relation_information_style"
-                    android:text="关注"/>
+                    android:text="校友"/>
             </LinearLayout>
 
             <LinearLayout
@@ -141,7 +144,7 @@
 
                 <TextView
                     style="@style/user_relation_information_style"
-                    android:text="粉丝"/>
+                    android:text="签到"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -159,6 +162,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+
 
     </ScrollView>
 

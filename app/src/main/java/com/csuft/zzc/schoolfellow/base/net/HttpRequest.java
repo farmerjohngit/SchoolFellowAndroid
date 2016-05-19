@@ -1,7 +1,8 @@
 package com.csuft.zzc.schoolfellow.base.net;
 
-import com.csuft.zzc.schoolfellow.base.data.BaseData;
+import com.squareup.okhttp.MediaType;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +36,13 @@ public class HttpRequest {
         return apiRequest.getMethod() == ApiRequest.POST ? apiRequest.getParams() : null;
     }
 
+    public List<String> getFileFormParams() {
+        return apiRequest.getMethod() == ApiRequest.POST ? apiRequest.getFileParams() : null;
+    }
+
+    public MediaType getType() {
+        return apiRequest.getMethod() == ApiRequest.POST ? apiRequest.getType() : null;
+    }
 
     public Class<?> getCallBackClazz() {
         return apiRequest.getCallBackClazz();
@@ -48,7 +56,7 @@ public class HttpRequest {
             return this;
         }
 
-        public HttpRequest build(){
+        public HttpRequest build() {
             return new HttpRequest(this);
         }
     }

@@ -2,6 +2,14 @@
 
 <resources>
     　　
-
+    <array name="school">
+        <item>中南林业科技大学</item>
+    </array>
+    <array name="colleges">
+        <item>计算机信息工程学院</item>
+    </array>
+    <array name="profession">
+        <item>计算机科学与技术</item>
+    </array>
     　　
 </resources>

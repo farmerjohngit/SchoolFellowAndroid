@@ -1,12 +1,8 @@
 package com.csuft.zzc.schoolfellow.base.utils;
 
-import android.content.Context;
-import android.util.AttributeSet;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by wangzhi on 16/4/27.

@@ -104,7 +104,12 @@ public class StickNavLayout extends LinearLayout implements AbsPullToRefresh.IRe
             RecyclerView rv = (RecyclerView) mInnerScroollView;
             LinearLayoutManager lm = (LinearLayoutManager) rv.getLayoutManager();
             View topView = lm.findViewByPosition(lm.findFirstVisibleItemPosition());
-            return topView == null ? true : (topView.getTop() == 0 && lm.findFirstVisibleItemPosition() == 0);
+            int topMargin = 0;
+            if (topView.getLayoutParams() instanceof MarginLayoutParams) {
+                MarginLayoutParams marginLayoutParams = (MarginLayoutParams) topView.getLayoutParams();
+                topMargin = marginLayoutParams.topMargin;
+            }
+            return topView == null ? true : (topView.getTop() == topMargin && lm.findFirstVisibleItemPosition() == 0);
         }
         return false;
     }
@@ -217,6 +222,7 @@ public class StickNavLayout extends LinearLayout implements AbsPullToRefresh.IRe
                     mLastY = event.getY();
                     mLastX = event.getX();
                     Log.i(TAG, "move" + -dy);
+                    ScLog.i(TAG, "isInnerScrollViewInTop " + isInnerScrollViewInTop());
                     if (getScrollY() < mNav.getTop() || (isInnerScrollViewInTop() && dy > 0)) {
                     } else {
                         //给子view接管

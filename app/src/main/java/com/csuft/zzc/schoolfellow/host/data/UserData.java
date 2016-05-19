@@ -8,17 +8,28 @@ import com.csuft.zzc.schoolfellow.base.data.BaseData;
 public class UserData extends BaseData {
     public String avatar;
 
-    public String id;
+    public String userName;
+
+    public String userPwd;
 
     public String name;
 
+    public int rank;
+
     public String introduction;
+    public String eduStartDate;
+    public String school;
+    public String colleges;
+    public String profession;
+    public String classs;
+
+
 
     public String weiboNum;
 
     public String careNum;
 
-    public String followerNums;
+    public String followerNum;
 
 
 }

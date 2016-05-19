@@ -2,12 +2,14 @@ package com.csuft.zzc.schoolfellow.im.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,8 +22,10 @@ import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.AbsPullToRefresh;
 import com.csuft.zzc.schoolfellow.base.view.PullToListView;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
-import com.csuft.zzc.schoolfellow.im.data.ImMsgData;
+import com.csuft.zzc.schoolfellow.im.act.ContactPersonAct;
 import com.csuft.zzc.schoolfellow.im.act.P2PChatAct;
+import com.csuft.zzc.schoolfellow.im.data.ImMsgsData;
+import com.csuft.zzc.schoolfellow.search.SearchAct;
 
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class ChatFragment extends BaseFragment {
     private static final String TAG = "ChatFragment";
     ListView mImgListView;
     private ImListAdapter mAdapter;
+    Button mContactBtn;
 
 
     @Override
@@ -42,10 +47,24 @@ public class ChatFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        findViewById(R.id.add_friend).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SearchAct.class));
+            }
+        });
         mPullToListView = (PullToListView) mContentView.findViewById(R.id.pullToRefresh);
+        mContactBtn = (Button) mContentView.findViewById(R.id.contact_btn);
+
+        mContactBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ContactPersonAct.class));
+            }
+        });
 
         initDataListView();
+
         mPullToListView.setOnRefreshListener(new AbsPullToRefresh.OnRefreshListener() {
             @Override
             public void onStartRefresh() {
@@ -83,9 +102,9 @@ public class ChatFragment extends BaseFragment {
     }
 
     public void requestImMsgData(final PullToListView pullToListView) {
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/im_msg", null, ImMsgData.class, new CallBack<ImMsgData>() {
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/im_msg", null, ImMsgsData.class, new CallBack<ImMsgsData>() {
             @Override
-            public void onSuccess(ImMsgData data) {
+            public void onSuccess(ImMsgsData data) {
                 mAdapter.setImItemDataList(data.result.msgList);
                 mAdapter.notifyDataSetChanged();
                 pullToListView.refreshFinish();
@@ -102,14 +121,14 @@ public class ChatFragment extends BaseFragment {
     }
 
     static class ImListAdapter extends BaseAdapter {
-        protected List<ImMsgData.ImMsgItem> imItemDataList;
+        protected List<ImMsgsData.ImMsgItem> imItemDataList;
         Context context;
 
         ImListAdapter(Context context) {
             this.context = context;
         }
 
-        public void setImItemDataList(List<ImMsgData.ImMsgItem> imItemDataList) {
+        public void setImItemDataList(List<ImMsgsData.ImMsgItem> imItemDataList) {
             this.imItemDataList = imItemDataList;
         }
 
@@ -136,7 +155,11 @@ public class ChatFragment extends BaseFragment {
                 convertView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        context.startActivity(new Intent(context, P2PChatAct.class));
+                        Intent intent = new Intent(context, P2PChatAct.class);
+                        Bundle bundle = new Bundle();
+//                        bundle.putSerializable("user", userData);
+                        intent.putExtra("bundle", bundle);
+                        context.startActivity(intent);
                     }
                 });
                 holder = new ImItemViewHolder(convertView);
@@ -144,19 +167,18 @@ public class ChatFragment extends BaseFragment {
             } else {
                 holder = (ImItemViewHolder) convertView.getTag();
             }
-            ImMsgData.ImMsgItem imMsgItem = imItemDataList.get(position);
+            ImMsgsData.ImMsgItem imMsgItem = imItemDataList.get(position);
             holder.headImg.setImageUrl(imMsgItem.avatar, true);
             holder.timeTxt.setText(DateUtil.showTime(imMsgItem.time));
             holder.nameTxt.setText(imMsgItem.userName);
             holder.contentTxt.setText(imMsgItem.msg);
-
 
             return convertView;
         }
     }
 
 
-    static class ImItemViewHolder extends RecyclerView.ViewHolder {
+    public static class ImItemViewHolder extends RecyclerView.ViewHolder {
         public ImItemViewHolder(View itemView) {
             super(itemView);
             nameTxt = (TextView) itemView.findViewById(R.id.name_txt);

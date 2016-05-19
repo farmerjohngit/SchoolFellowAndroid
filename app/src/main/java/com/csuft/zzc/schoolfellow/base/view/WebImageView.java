@@ -3,7 +3,6 @@ package com.csuft.zzc.schoolfellow.base.view;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
