@@ -92,6 +92,7 @@ public class MeFragment extends BaseFragment {
                 UserManager.getInstance().logout();
 
                 startActivity(new Intent(getActivity(), LoginAct.class));
+                getActivity().finish();
             }
         });
         final Button button = (Button) mContentView.findViewById(R.id.btn);
@@ -111,7 +112,7 @@ public class MeFragment extends BaseFragment {
 
     public void reqData() {
         HashMap<String, String> hashMap = new HashMap();
-        hashMap.put("userName", UserManager.getInstance().getUser().userName);
+        hashMap.put("userName", UserManager.getInstance().getUserName());
         hashMap.put("wantData", "1");
         BaseApi.getInstance().get(BaseApi.HOST_URL + "/user_info", hashMap, QueryUserData.class, new CallBack<QueryUserData>() {
             @Override
@@ -122,9 +123,9 @@ public class MeFragment extends BaseFragment {
                     introductionTxt.setText(data.result.user.introduction);
                 }
                 headImg.setImageUrl(data.result.user.avatar, true);
-                mFollowTxt.setText(data.result.user.followerNum);
-                mCareNumTxt.setText(data.result.user.careNum);
-                mWbNumTxt.setText(data.result.user.weiboNum);
+//                mFollowTxt.setText(data.result.user.followerNum);
+//                mCareNumTxt.setText(data.result.user.careNum);
+//                mWbNumTxt.setText(data.result.user.weiboNum);
             }
 
             @Override

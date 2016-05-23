@@ -1,6 +1,8 @@
 package com.csuft.zzc.schoolfellow.host;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +14,12 @@ import android.widget.TextView;
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
 import com.csuft.zzc.schoolfellow.base.utils.BitmapUtil;
+import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.circle.fragment.SchoolCircleFragment;
 import com.csuft.zzc.schoolfellow.host.fragment.FragmentFactory;
 import com.csuft.zzc.schoolfellow.host.fragment.HostFragmentTabHost;
-import com.csuft.zzc.schoolfellow.me.MeFragment;
 import com.csuft.zzc.schoolfellow.im.fragment.ChatFragment;
+import com.csuft.zzc.schoolfellow.me.MeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +50,8 @@ public class HostActivity extends BaseFragmentActivity {
         setContentView(R.layout.host_act);
         init();
         initView();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
+
     }
 
     private void init() {
@@ -99,6 +102,18 @@ public class HostActivity extends BaseFragmentActivity {
 
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String initFragment = getIntent().getStringExtra("init_fragment");
+        ScLog.i("===>" + initFragment);
+        if (!TextUtils.isEmpty(initFragment)) {
+            mTabHost.setCurrentTabByTag(initFragment);
+        }
+
+    }
+
 
     public View getTabItemView(PageData data) {
         View itemView = LayoutInflater.from(this).inflate(R.layout.host_tab_item, null);

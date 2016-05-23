@@ -19,14 +19,17 @@ import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.DateUtil;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.AbsPullToRefresh;
 import com.csuft.zzc.schoolfellow.base.view.PullToListView;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.im.act.ContactPersonAct;
 import com.csuft.zzc.schoolfellow.im.act.P2PChatAct;
-import com.csuft.zzc.schoolfellow.im.data.ImMsgsData;
+import com.csuft.zzc.schoolfellow.im.data.RecentImMsgData;
 import com.csuft.zzc.schoolfellow.search.SearchAct;
+import com.csuft.zzc.schoolfellow.user.UserManager;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -43,6 +46,12 @@ public class ChatFragment extends BaseFragment {
     @Override
     protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
         return inflater.inflate(R.layout.char_fra, null);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestImMsgDataWithCache(mPullToListView);
     }
 
     @Override
@@ -85,13 +94,14 @@ public class ChatFragment extends BaseFragment {
 
             }
         });
-        requestImMsgDataWithCache(mPullToListView);
+
     }
 
     public void initDataListView() {
         mImgListView = mPullToListView.getRefreshView();
         mAdapter = new ImListAdapter(this.getContext());
         mImgListView.setAdapter(mAdapter);
+//        mImgListView.setDividerHeight(ScreenUtil.instance().dip2px(4));
 
     }
 
@@ -102,9 +112,11 @@ public class ChatFragment extends BaseFragment {
     }
 
     public void requestImMsgData(final PullToListView pullToListView) {
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/im_msg", null, ImMsgsData.class, new CallBack<ImMsgsData>() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("userName", UserManager.getInstance().getUserName());
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/recent_im_msg", hashMap, RecentImMsgData.class, new CallBack<RecentImMsgData>() {
             @Override
-            public void onSuccess(ImMsgsData data) {
+            public void onSuccess(RecentImMsgData data) {
                 mAdapter.setImItemDataList(data.result.msgList);
                 mAdapter.notifyDataSetChanged();
                 pullToListView.refreshFinish();
@@ -121,14 +133,14 @@ public class ChatFragment extends BaseFragment {
     }
 
     static class ImListAdapter extends BaseAdapter {
-        protected List<ImMsgsData.ImMsgItem> imItemDataList;
+        protected List<RecentImMsgData.RecentImMsgItem> imItemDataList;
         Context context;
 
         ImListAdapter(Context context) {
             this.context = context;
         }
 
-        public void setImItemDataList(List<ImMsgsData.ImMsgItem> imItemDataList) {
+        public void setImItemDataList(List<RecentImMsgData.RecentImMsgItem> imItemDataList) {
             this.imItemDataList = imItemDataList;
         }
 
@@ -148,7 +160,7 @@ public class ChatFragment extends BaseFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             ImItemViewHolder holder = null;
             if (convertView == null) {
                 convertView = LayoutInflater.from(context).inflate(R.layout.im_item_fra, parent, false);
@@ -157,7 +169,7 @@ public class ChatFragment extends BaseFragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(context, P2PChatAct.class);
                         Bundle bundle = new Bundle();
-//                        bundle.putSerializable("user", userData);
+                        bundle.putSerializable("user", imItemDataList.get(position).user);
                         intent.putExtra("bundle", bundle);
                         context.startActivity(intent);
                     }
@@ -167,10 +179,10 @@ public class ChatFragment extends BaseFragment {
             } else {
                 holder = (ImItemViewHolder) convertView.getTag();
             }
-            ImMsgsData.ImMsgItem imMsgItem = imItemDataList.get(position);
-            holder.headImg.setImageUrl(imMsgItem.avatar, true);
+            RecentImMsgData.RecentImMsgItem imMsgItem = imItemDataList.get(position);
+            holder.headImg.setImageUrl(imMsgItem.user.avatar, true);
             holder.timeTxt.setText(DateUtil.showTime(imMsgItem.time));
-            holder.nameTxt.setText(imMsgItem.userName);
+            holder.nameTxt.setText(imMsgItem.user.userName);
             holder.contentTxt.setText(imMsgItem.msg);
 
             return convertView;

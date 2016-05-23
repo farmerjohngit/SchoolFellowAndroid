@@ -64,6 +64,9 @@
     </RelativeLayout>
 
     <TextView
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:textSize="18sp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:id="@+id/text"
@@ -71,9 +74,12 @@
         android:layout_height="wrap_content"/>
 
     <com.csuft.zzc.schoolfellow.base.view.WebImageView
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="2dp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
+        android:scaleType="centerCrop"
         android:id="@+id/publishImg"
         android:layout_width="240dp"
-        android:layout_height="240dp"/>
+        android:layout_height="200dp"/>
 </LinearLayout>

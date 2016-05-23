@@ -2,25 +2,22 @@ package com.csuft.zzc.schoolfellow.im.data;
 
 
 import com.csuft.zzc.schoolfellow.base.data.BaseData;
+import com.csuft.zzc.schoolfellow.host.data.UserData;
 
 import java.util.List;
 
-public class ImMsgsData extends BaseData {
+public class RecentImMsgData extends BaseData {
 
     public Result result;
 
     public static class Result {
-        public List<ImMsgItem> msgList;
+        public List<RecentImMsgItem> msgList;
     }
 
-    public static class ImMsgItem {
-        public String userId;
+    public static class RecentImMsgItem {
 
-        public String userName;
+        public UserData user;
 
-        public String userGroup;
-
-        public String avatar;
 
         public String msg;
 

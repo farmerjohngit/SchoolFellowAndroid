@@ -26,7 +26,6 @@ import com.csuft.zzc.schoolfellow.base.data.QueryData;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
-import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.ScToast;
 import com.csuft.zzc.schoolfellow.base.view.TopBar;
 import com.csuft.zzc.schoolfellow.user.UserManager;
@@ -52,6 +51,12 @@ public class PublishAct extends BaseFragmentActivity {
         TopBar topBar = (TopBar) findViewById(R.id.top_bar);
         mEdit = (EditText) findViewById(R.id.edit_content);
         addImageView = (ImageView) findViewById(R.id.add_img);
+        topBar.setOnLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         topBar.setOnRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

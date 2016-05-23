@@ -4,9 +4,42 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <com.csuft.zzc.schoolfellow.base.view.TopBar
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#12b7f5"
+        >
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:onClick="back"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@mipmap/btn_navigation_back"/>
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="xxx"/>
+
+    </com.csuft.zzc.schoolfellow.base.view.TopBar>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/msgs_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@mipmap/user_bg">
+
+
+    </android.support.v7.widget.RecyclerView>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_height="55dp"
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingLeft="6dp"
@@ -28,11 +61,16 @@
             android:paddingBottom="10dp"
             android:paddingTop="0dp"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
             android:onClick="send"
-            android:text="发送 "/>
+            android:id="@+id/input_bottom_bar_btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:background="@null"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:src="@mipmap/btn_send"/>
 
     </LinearLayout>
 </LinearLayout>

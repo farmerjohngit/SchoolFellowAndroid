@@ -1,23 +1,19 @@
 package com.csuft.zzc.schoolfellow.circle.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextPaint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.csuft.zzc.schoolfellow.R;
+import com.csuft.zzc.schoolfellow.base.utils.ArrayUtil;
 import com.csuft.zzc.schoolfellow.base.utils.DateUtil;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
-import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
-import com.csuft.zzc.schoolfellow.circle.act.NewsDetailAct;
 import com.csuft.zzc.schoolfellow.circle.data.DynamicData;
-import com.csuft.zzc.schoolfellow.circle.data.NewsData;
-import com.csuft.zzc.schoolfellow.host.util.DataFormatUtil;
 
 import java.util.List;
 
@@ -48,7 +44,13 @@ public class DynamicWaterFallAdapter extends RecyclerView.Adapter<DynamicViewHol
         holder.timeTxt.setText(DateUtil.dataFormatByDefault(info.time));
         ScLog.i(TAG, "info.time " + info.time);
         holder.headImg.setImageUrl(info.avatar, true);
-        holder.publishImg.setImageUrl(info.imgs.get(0));
+        String url = ArrayUtil.getFirstItem(info.imgs);
+        if (TextUtils.isEmpty(url)) {
+            holder.publishImg.setVisibility(View.GONE);
+        } else {
+            holder.publishImg.setVisibility(View.VISIBLE);
+            holder.publishImg.setImageUrl(ArrayUtil.getFirstItem(info.imgs));
+        }
 //
 //        TextPaint tp = holder.titleTxt.getPaint();
 //        tp.setFakeBoldText(true);

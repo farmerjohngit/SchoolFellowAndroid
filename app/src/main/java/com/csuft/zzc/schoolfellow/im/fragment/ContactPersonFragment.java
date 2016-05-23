@@ -19,7 +19,6 @@ import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.host.data.UserData;
 import com.csuft.zzc.schoolfellow.im.act.P2PChatAct;
 import com.csuft.zzc.schoolfellow.im.data.ContactsData;
-import com.csuft.zzc.schoolfellow.user.UserInfoAct;
 import com.csuft.zzc.schoolfellow.user.UserManager;
 
 import java.util.HashMap;

@@ -2,26 +2,14 @@ package com.csuft.zzc.schoolfellow.app;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVOSCloud;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.PushService;
-import com.avos.avoscloud.im.v2.AVIMClient;
-import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMMessageHandler;
 import com.avos.avoscloud.im.v2.AVIMMessageManager;
-import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.csuft.zzc.schoolfellow.BuildConfig;
+import com.csuft.zzc.schoolfellow.base.im.ImUtil;
 import com.csuft.zzc.schoolfellow.base.utils.AppContextGetter;
-import com.csuft.zzc.schoolfellow.base.utils.ScLog;
-import com.csuft.zzc.schoolfellow.base.view.ScToast;
 import com.csuft.zzc.schoolfellow.host.SplashAct;
 import com.csuft.zzc.schoolfellow.im.SCMessageHandler;
 import com.mogujie.layoutcast.LayoutCast;
@@ -50,6 +38,7 @@ public class SFApp extends Application {
         AVInstallation.getCurrentInstallation().saveInBackground();
         AVOSCloud.setDebugLogEnabled(BuildConfig.DEBUG);
         PushService.setDefaultPushCallback(this, SplashAct.class);
+
     }
 
 

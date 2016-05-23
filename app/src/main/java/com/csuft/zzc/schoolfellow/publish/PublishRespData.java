@@ -1,6 +1,5 @@
 package com.csuft.zzc.schoolfellow.publish;
 
-import com.csuft.zzc.schoolfellow.base.data.BaseData;
 import com.csuft.zzc.schoolfellow.base.data.QueryData;
 
 /**

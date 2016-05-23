@@ -62,11 +62,17 @@ public class OkHttpNetExecutor implements INetExecutor {
 
 
                 try {
-                    final BaseData baseData = (BaseData) gson.fromJson(bodyString, clazz);
+                    BaseData baseData = null;
+                    if (clazz != null) {
+                        baseData = (BaseData) gson.fromJson(bodyString, clazz);
+                    }
+                    final BaseData finalBaseData = baseData;
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            httpRequest.getCallBack().onSuccess(baseData);
+                            if (httpRequest.getCallBack() != null) {
+                                httpRequest.getCallBack().onSuccess(finalBaseData);
+                            }
                         }
                     });
                 } catch (final Exception e) {
@@ -74,7 +80,9 @@ public class OkHttpNetExecutor implements INetExecutor {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            httpRequest.getCallBack().onFailure(-2, e.getMessage());
+                            if (httpRequest.getCallBack() != null) {
+                                httpRequest.getCallBack().onFailure(-2, e.getMessage());
+                            }
                         }
                     });
                 }

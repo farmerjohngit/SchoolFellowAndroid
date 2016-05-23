@@ -9,9 +9,7 @@ import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.DividerItemDecoration;
 import com.csuft.zzc.schoolfellow.circle.adapter.DynamicWaterFallAdapter;
-import com.csuft.zzc.schoolfellow.circle.adapter.NewsWaterFallAdapter;
 import com.csuft.zzc.schoolfellow.circle.data.DynamicData;
-import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 
 /**
  * Created by wangzhi on 16/5/18.

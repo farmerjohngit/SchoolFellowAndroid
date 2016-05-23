@@ -9,12 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.csuft.zzc.schoolfellow.R;
-import com.csuft.zzc.schoolfellow.base.net.BaseApi;
-import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.WaterFallRecyclerView;
-import com.csuft.zzc.schoolfellow.circle.adapter.NewsWaterFallAdapter;
-import com.csuft.zzc.schoolfellow.circle.data.NewsData;
 
 /**
  * Created by wangzhi on 16/3/11.

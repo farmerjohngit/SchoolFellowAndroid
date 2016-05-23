@@ -25,6 +25,10 @@ public class ScLog {
         Log.e(tag, msg == null ? "null" : msg.toString());
     }
 
+    public static void e(String tag, Object msg, Throwable tr) {
+        Log.e(tag, msg == null ? "null" : msg.toString(), tr);
+    }
+
     public static void e(Object msg) {
         StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
         StackTraceElement element = stackTrace[3];
