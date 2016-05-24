@@ -28,6 +28,7 @@ import com.csuft.zzc.schoolfellow.base.view.TopBar;
 import com.csuft.zzc.schoolfellow.circle.act.NewsDetailAct;
 import com.csuft.zzc.schoolfellow.circle.data.NewsBannerData;
 import com.csuft.zzc.schoolfellow.circle.data.SchoolCirclePagerData;
+import com.csuft.zzc.schoolfellow.host.fragment.DynamicWaterFallFragment;
 import com.csuft.zzc.schoolfellow.publish.PublishAct;
 
 import java.util.List;
@@ -87,6 +88,17 @@ public class SchoolCircleFragment extends BaseFragment {
                 ScLog.i("onRefreshFinish ");
             }
         });
+        mPullToRefresh.setOnLoadMoreListener(new AbsPullToRefresh.OnLoadMoreListener() {
+            @Override
+            public void onStartLoadMore() {
+                ScLog.i(TAG, "onStartLoadMore");
+            }
+
+            @Override
+            public void onLoadFinish() {
+
+            }
+        });
         mScrollPager = (AbsAutoScrollLayout) mContentView.findViewById(R.id.scrollPager);
         mScrollPager.addOnItemClickListener(new AbsAutoScrollLayout.OnItemClickListener() {
             @Override
@@ -134,16 +146,18 @@ public class SchoolCircleFragment extends BaseFragment {
     }
 
     private static final String TAG = "SchoolCircleFragment";
-    public void reqWaterData(){
-        for(Fragment fragment:getFragmentManager().getFragments()){
-            if(fragment instanceof BaseWaterfallFragment ){
-                ScLog.i(TAG,"reqWaterData");
-                BaseWaterfallFragment baseWaterfallFragment= (BaseWaterfallFragment) fragment;
+
+    public void reqWaterData() {
+        for (Fragment fragment : getFragmentManager().getFragments()) {
+            if (fragment instanceof BaseWaterfallFragment) {
+                ScLog.i(TAG, "reqWaterData");
+                BaseWaterfallFragment baseWaterfallFragment = (BaseWaterfallFragment) fragment;
                 baseWaterfallFragment.reqData();
             }
-           
+
         }
     }
+
     public void reqBannerData() {
         BaseApi.getInstance().get(BaseApi.HOST_URL + "/news_banner", null, NewsBannerData.class, new CallBack<NewsBannerData>() {
 

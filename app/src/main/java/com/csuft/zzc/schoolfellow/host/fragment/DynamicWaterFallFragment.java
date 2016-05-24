@@ -1,7 +1,9 @@
-package com.csuft.zzc.schoolfellow.circle.fragment;
+package com.csuft.zzc.schoolfellow.host.fragment;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 
 import com.csuft.zzc.schoolfellow.base.fragment.BaseWaterfallFragment;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
@@ -10,6 +12,8 @@ import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.DividerItemDecoration;
 import com.csuft.zzc.schoolfellow.circle.adapter.DynamicWaterFallAdapter;
 import com.csuft.zzc.schoolfellow.circle.data.DynamicData;
+
+import java.util.HashMap;
 
 /**
  * Created by wangzhi on 16/5/18.
@@ -30,7 +34,14 @@ public class DynamicWaterFallFragment extends BaseWaterfallFragment {
     @Override
     public void reqData() {
         super.reqData();
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/dynamic", null, DynamicData.class, new CallBack<DynamicData>() {
+        Bundle bundle = getArguments();
+        HashMap hashMap = null;
+        if (bundle != null && !TextUtils.isEmpty(bundle.getString("userName"))) {
+            hashMap = new HashMap();
+            hashMap.put("userName", bundle.getString("userName"));
+        }
+
+        BaseApi.getInstance().get(BaseApi.HOST_URL + "/dynamic", hashMap, DynamicData.class, new CallBack<DynamicData>() {
             @Override
             public void onSuccess(DynamicData data) {
                 ScLog.i("req news onSuccess " + mAdapter);

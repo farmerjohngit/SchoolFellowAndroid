@@ -16,6 +16,7 @@ import com.csuft.zzc.schoolfellow.base.data.DataFactory;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.host.data.UserData;
+import com.csuft.zzc.schoolfellow.host.fragment.DynamicWaterFallFragment;
 import com.csuft.zzc.schoolfellow.host.util.DataFormatUtil;
 
 import java.util.ArrayList;
@@ -96,10 +97,20 @@ public class UserInfoAct extends BaseFragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            UserInfoFragment fragment = mFragments.get(position);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("user", mUserData);
-            fragment.setArguments(bundle);
+            Fragment fragment = null;
+            if (position == 0) {
+                fragment = mFragments.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", mUserData);
+                fragment.setArguments(bundle);
+            } else {
+                fragment = new DynamicWaterFallFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("userName", mUserData.userName);
+                fragment.setArguments(bundle);
+            }
+
+
             return fragment;
         }
 

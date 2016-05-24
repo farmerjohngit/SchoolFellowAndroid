@@ -45,7 +45,7 @@ class LoginComponent extends Component {
       color: 'black',
       textAlign: 'center',
       justifyContent:'center',
-      alignSelf: 'center'}} >登陆</Text>
+      alignSelf: 'center'}} >登录</Text>
 
       <TouchableHighlight  style={{flex: 1,marginRight:16,alignSelf: 'center'}}
       onPress={this.onRegiPressed.bind(this)}

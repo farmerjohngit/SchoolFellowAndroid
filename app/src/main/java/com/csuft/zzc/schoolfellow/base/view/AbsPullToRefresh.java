@@ -1,19 +1,19 @@
 package com.csuft.zzc.schoolfellow.base.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
 
+import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
+import com.csuft.zzc.schoolfellow.base.utils.ScrollUtil;
 
 /**
  * Created by wangzhi on 16/3/12.
@@ -22,6 +22,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     private static final String TAG = "AbsPullToRefresh";
     protected H mRefreshHeaderView;
     protected T mRefreshView;
+    protected View mRefreshBottomView;
     private int mTouchSlop;
     private int mLastY;
     private int mLastX;
@@ -38,6 +39,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
 
     OnRefreshListener mOnRefreshListener;
+    OnLoadMoreListener mOnLoadMoreListener;
 
     public AbsPullToRefresh(Context context) {
         this(context, null);
@@ -57,9 +59,11 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
         mRefreshHeaderView = createIndicatorView();
         mRefreshView = createRefreshView();
+        mRefreshBottomView = createRefreshBottomView();
 
         this.addView(mRefreshHeaderView);
         this.addView(mRefreshView);
+        this.addView(mRefreshBottomView);
     }
 
 
@@ -72,7 +76,6 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         if (nowMargin == 0) {
             nowMargin = mParams.topMargin;
         }
-        Log.i(TAG, "layout " + mTopOffset);
     }
 
 
@@ -91,10 +94,9 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                 break;
             case MotionEvent.ACTION_MOVE:
                 int dy = nowY - mLastY;
-                if (Math.abs(dy) > 0) {
+                if ((dy) > 0) {
                     ScLog.i(TAG, "nowMargin: " + nowMargin + "  mTopOffset: " + mTopOffset + "<>" + refreshViewIsOnTop());
                     if (nowMargin >= mTopOffset && refreshViewIsOnTop()) {
-//                        if ((nowY - mDownY) * damp <= mPullMaxDis) {
                         int moveTo = (nowY - mDownY);
                         if (moveTo < mTopOffset) {
                             moveTo = mTopOffset;
@@ -104,7 +106,6 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                         float percent = Math.abs(moveTo - mTopOffset) * 1.0f / (mPullMaxDis + Math.abs(mTopOffset));
                         ScLog.i(TAG, "percent " + percent + "  :   " + (percent * -0.3 + 0.5));
                         moveHeader((int) ((nowY - mDownY) * (percent * -0.4 + 0.8)));
-//                        }
                     } else {
                         ScLog.i(TAG, "redispatch ");
                         MotionEvent event = MotionEvent.obtain(ev);
@@ -115,6 +116,13 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                     }
                     mLastY = nowY;
                     mLastX = nowX;
+                } else {
+                    if (refreshViewIsOnBottom()) {
+                        if (mOnLoadMoreListener != null && refreshStatus == RefreshStatus.INIT) {
+                            refreshStatus = RefreshStatus.LOADING;
+                            mOnLoadMoreListener.onStartLoadMore();
+                        }
+                    }
                 }
 
                 break;
@@ -128,6 +136,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                     mRefreshHeaderView.refreshAnimation();
                 } else {
                     moveHeader(mTopOffset);
+                    refreshStatus = RefreshStatus.INIT;
                 }
                 break;
         }
@@ -138,7 +147,7 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-        Log.i("wangzhi", "requestDisallowInterceptTouchEvent " + disallowIntercept);
+        ScLog.i(TAG, "requestDisallowInterceptTouchEvent " + disallowIntercept);
     }
 
     @Override
@@ -163,7 +172,8 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
                         + " refreshViewIsOnTop:  " + refreshViewIsOnTop()
                         + "  " + (nowY - mDownY)
                         + " mPullMaxDis: " + mPullMaxDis);
-                if (dy > 0 && Math.abs(dy) > Math.abs(dx) && refreshViewIsOnTop()) {
+                if ((dy > 0 && Math.abs(dy) > Math.abs(dx) && refreshViewIsOnTop())
+                        || (refreshViewIsOnBottom() && dy < 0)) {
                     isIntercept = true;
                     mLastY = nowY;
                     mLastX = nowX;
@@ -187,26 +197,23 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
     protected abstract T createRefreshView();
 
+    protected View createRefreshBottomView() {
+        LinearLayout linearLayout = new LinearLayout(getContext());
+
+        return LayoutInflater.from(getContext()).inflate(R.layout.refresh_bottom, null, false);
+    }
+
 
     public T getRefreshView() {
         return mRefreshView;
     }
 
     protected boolean refreshViewIsOnTop() {
-        if (this.mRefreshView instanceof ScrollView) {
-            return ((ScrollView) this.mRefreshView).getChildCount() == 0 ? true : this.mRefreshView.getScrollY() <= 0;
-        } else if (this.mRefreshView instanceof RecyclerView) {
-            RecyclerView recyclerView = (RecyclerView) this.mRefreshView;
-            View child = recyclerView.getChildAt(0);
-            return null == child ? true : child.getTop() >= 0;
-        } else if (this.mRefreshView instanceof ListView) {
-            View child = ((ListView) mRefreshView).getChildAt(0);
-            return ((ListView) mRefreshView).getFirstVisiblePosition() == 0 && child == null ? true : child.getTop() == 0;
-        } else if (this.mRefreshView instanceof IRefreshAble) {
-            return ((IRefreshAble) mRefreshView).onTop();
-        } else {
-            return true;
-        }
+        return ScrollUtil.isScrollViewInTop(mRefreshView);
+    }
+
+    protected boolean refreshViewIsOnBottom() {
+        return ScrollUtil.refreshViewInBottom(mRefreshView);
     }
 
     private void moveHeader(int moveTo) {
@@ -221,23 +228,38 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
             mOnRefreshListener.onPullDown(percent);
         }
         refreshStatus = RefreshStatus.PULL_DOWN;
-        ScLog.i(TAG, "movew to " + moveTo);
+        ScLog.i(TAG, "move to " + moveTo);
         nowMargin = mParams.topMargin = moveTo;
         mRefreshHeaderView.setLayoutParams(mParams);
 
     }
 
     public void refreshFinish() {
-        refreshStatus = RefreshStatus.INIT;
         moveHeader(mTopOffset);
+        refreshStatus = RefreshStatus.INIT;
         mRefreshHeaderView.abortAnimation();
-        mOnRefreshListener.onRefreshFinish();
+        if (mOnRefreshListener != null) {
+            mOnRefreshListener.onRefreshFinish();
+        }
         ScLog.i(TAG, "refreshFinish");
+    }
+
+    public void loadFinish() {
+        refreshStatus = RefreshStatus.INIT;
+        if (mOnLoadMoreListener != null) {
+            mOnLoadMoreListener.onLoadFinish();
+        }
+        ScLog.i(TAG, "loadFinish");
     }
 
 
     public void setOnRefreshListener(AbsPullToRefresh.OnRefreshListener onRefreshListener) {
         this.mOnRefreshListener = onRefreshListener;
+    }
+
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.mOnLoadMoreListener = onLoadMoreListener;
     }
 
     public interface OnRefreshListener {
@@ -246,15 +268,25 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
         void onPullDown(float per);
 
         void onRefreshFinish();
+
+    }
+
+    public interface OnLoadMoreListener {
+        void onStartLoadMore();
+
+        void onLoadFinish();
+
     }
 
 
     public enum RefreshStatus {
-        PULL_DOWN, REFRESHING, INIT
+        PULL_DOWN, REFRESHING, INIT, LOADING
     }
 
     public interface IRefreshAble {
         boolean onTop();
+
+        boolean onBottom();
     }
 
 }

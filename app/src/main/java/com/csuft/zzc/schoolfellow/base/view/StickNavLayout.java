@@ -4,21 +4,18 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.OverScroller;
-import android.widget.ScrollView;
 
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.csuft.zzc.schoolfellow.base.utils.ScrollUtil;
 
 /**
  * Created by wangzhi on 15/12/22.
@@ -98,20 +95,12 @@ public class StickNavLayout extends LinearLayout implements AbsPullToRefresh.IRe
 
     private boolean isInnerScrollViewInTop() {
         getInnerScrollView();
-        if (mInnerScroollView instanceof ScrollView) {
-            return (mInnerScroollView).getScrollY() == 0;
-        } else if (mInnerScroollView instanceof RecyclerView) {
-            RecyclerView rv = (RecyclerView) mInnerScroollView;
-            LinearLayoutManager lm = (LinearLayoutManager) rv.getLayoutManager();
-            View topView = lm.findViewByPosition(lm.findFirstVisibleItemPosition());
-            int topMargin = 0;
-            if (topView.getLayoutParams() instanceof MarginLayoutParams) {
-                MarginLayoutParams marginLayoutParams = (MarginLayoutParams) topView.getLayoutParams();
-                topMargin = marginLayoutParams.topMargin;
-            }
-            return topView == null ? true : (topView.getTop() == topMargin && lm.findFirstVisibleItemPosition() == 0);
-        }
-        return false;
+        return ScrollUtil.isScrollViewInTop(mInnerScroollView);
+    }
+
+    private boolean isInnerScrollViewInBottom() {
+        getInnerScrollView();
+        return ScrollUtil.refreshViewInBottom(mInnerScroollView);
     }
 
     boolean measureFlag = false;
@@ -276,5 +265,10 @@ public class StickNavLayout extends LinearLayout implements AbsPullToRefresh.IRe
     public boolean onTop() {
         ScLog.i(TAG, "onTop " + getScrollY());
         return getScrollY() <= 0;
+    }
+
+    @Override
+    public boolean onBottom() {
+        return isInnerScrollViewInBottom();
     }
 }

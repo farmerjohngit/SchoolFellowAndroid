@@ -21,6 +21,7 @@ import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
 import com.csuft.zzc.schoolfellow.base.view.ScToast;
 import com.csuft.zzc.schoolfellow.host.data.UserData;
+import com.csuft.zzc.schoolfellow.host.fragment.DynamicWaterFallFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
