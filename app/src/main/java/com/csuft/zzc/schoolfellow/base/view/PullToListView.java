@@ -22,10 +22,6 @@ public class PullToListView extends AbsPullToRefresh<RefreshIndicator, ListView>
 
     @Override
     protected RefreshIndicator createIndicatorView() {
-//        LinearLayout linearLayout = new LinearLayout(getContext());
-//        linearLayout.setBackgroundResource(R.drawable.pulltorefresh_header);
-//        linearLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(mScreenUtil.dip2px(20), mScreenUtil.dip2px(20)));
-//        return linearLayout;
         RefreshIndicator refreshIndicator = new RefreshIndicator(getContext());
         refreshIndicator.setLayoutParams(new LinearLayoutCompat.LayoutParams(mScreenUtil.dip2px(26), mScreenUtil.dip2px(26)));
         return refreshIndicator;
@@ -35,7 +31,7 @@ public class PullToListView extends AbsPullToRefresh<RefreshIndicator, ListView>
     protected ListView createRefreshView() {
 
         ListView listView = new ListView(getContext());
-        listView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
+        listView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         return listView;
 //        imItemDataList = DataFactory.createImItemData(30);
     }

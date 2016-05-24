@@ -29,8 +29,11 @@ import com.sqk.emojirelease.EmojiUtil;
 import com.sqk.emojirelease.FaceFragment;
 
 /**
+ * just test
+ *
  * @author Joker_Ya
  */
+@Deprecated
 public class EmojiAct extends BaseFragmentActivity implements FaceFragment.OnEmojiClickListener {
 
     private TextView textView;
@@ -38,6 +41,7 @@ public class EmojiAct extends BaseFragmentActivity implements FaceFragment.OnEmo
     private Button button;
     private int[] images = {R.mipmap.btn_navigation_back, R.mipmap.search};
     private static final String TAG = "EmojiAct";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +61,7 @@ public class EmojiAct extends BaseFragmentActivity implements FaceFragment.OnEmo
                 // 产生0~7的随机数
                 int randomId = new Random().nextInt(2);
                 /*
-				 * TextView显示表情图片
+                 * TextView显示表情图片
 				 */
                 String html = "这是QQ表情<img src='" + images[randomId] + "'/>";
                 // 调用Html的fromHtml对html处理

@@ -81,7 +81,7 @@ public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnE
         mMEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction()==MotionEvent.ACTION_UP){
+                if (event.getAction() == MotionEvent.ACTION_UP) {
                     hiddenExpressionFragment();
                 }
                 return false;
@@ -189,7 +189,7 @@ public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnE
 
 
     private void hiddenExpressionFragment() {
-        ScLog.i(TAG,"hiddenExpressionFragment");
+        ScLog.i(TAG, "hiddenExpressionFragment");
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.container);
         if (f != null) {
             getSupportFragmentManager().beginTransaction().hide(f).commit();
