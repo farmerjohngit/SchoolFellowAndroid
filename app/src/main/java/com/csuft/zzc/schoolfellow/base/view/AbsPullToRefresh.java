@@ -59,11 +59,11 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
 
         mRefreshHeaderView = createIndicatorView();
         mRefreshView = createRefreshView();
-        mRefreshBottomView = createRefreshBottomView();
+//        mRefreshBottomView = createRefreshBottomView();
 
         this.addView(mRefreshHeaderView);
         this.addView(mRefreshView);
-        this.addView(mRefreshBottomView);
+//        this.addView(mRefreshBottomView);
     }
 
 
@@ -198,9 +198,8 @@ public abstract class AbsPullToRefresh<H extends RefreshIndicator, T extends Vie
     protected abstract T createRefreshView();
 
     protected View createRefreshBottomView() {
-        LinearLayout linearLayout = new LinearLayout(getContext());
 
-        return LayoutInflater.from(getContext()).inflate(R.layout.refresh_bottom, null, false);
+        return LayoutInflater.from(getContext()).inflate(R.layout.refresh_bottom, this, false);
     }
 
 

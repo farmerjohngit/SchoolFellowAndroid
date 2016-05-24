@@ -35,7 +35,7 @@ public class PullToListView extends AbsPullToRefresh<RefreshIndicator, ListView>
     protected ListView createRefreshView() {
 
         ListView listView = new ListView(getContext());
-        listView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        listView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
         return listView;
 //        imItemDataList = DataFactory.createImItemData(30);
     }

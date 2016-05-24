@@ -28,7 +28,9 @@ import com.csuft.zzc.schoolfellow.im.act.P2PChatAct;
 import com.csuft.zzc.schoolfellow.im.data.RecentImMsgData;
 import com.csuft.zzc.schoolfellow.search.SearchAct;
 import com.csuft.zzc.schoolfellow.user.UserManager;
+import com.sqk.emojirelease.EmojiUtil;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -183,8 +185,11 @@ public class ChatFragment extends BaseFragment {
             holder.headImg.setImageUrl(imMsgItem.user.avatar, true);
             holder.timeTxt.setText(DateUtil.showTime(imMsgItem.time));
             holder.nameTxt.setText(imMsgItem.user.userName);
-            holder.contentTxt.setText(imMsgItem.msg);
-
+            try {
+                EmojiUtil.handlerEmojiText(holder.contentTxt, imMsgItem.msg, context);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return convertView;
         }
     }

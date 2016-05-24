@@ -1,11 +1,18 @@
 package com.csuft.zzc.schoolfellow.im.act;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,13 +34,13 @@ import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.SpaceItemDecoration;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.host.data.UserData;
-import com.csuft.zzc.schoolfellow.im.SCMessageHandler;
-import com.csuft.zzc.schoolfellow.im.data.ImMsgData;
 import com.csuft.zzc.schoolfellow.im.model.ImMsgItem;
 import com.csuft.zzc.schoolfellow.user.UserManager;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.sqk.emojirelease.Emoji;
+import com.sqk.emojirelease.EmojiUtil;
+import com.sqk.emojirelease.FaceFragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +48,7 @@ import java.util.List;
 /**
  * Created by wangzhi on 16/4/27.
  */
-public class P2PChatAct extends BaseFragmentActivity {
+public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnEmojiClickListener {
     private static final String TAG = "P2PChatAct";
 
     private UserData mOtherUser;
@@ -56,6 +63,9 @@ public class P2PChatAct extends BaseFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            getWindow().setStatusBarColor(Color.RED);
+//        }
         setContentView(R.layout.p2pchat_act);
         Bundle bundle = getIntent().getBundleExtra("bundle");
         if (bundle != null) {
@@ -67,7 +77,18 @@ public class P2PChatAct extends BaseFragmentActivity {
         nameTxt.setText(mOtherUser.userName);
         mMsgList = new ArrayList<>();
         mLoginUser = UserManager.getInstance().getUser();
-        mMEditText = (EditText) findViewById(R.id.text);
+        mMEditText = (EditText) findViewById(R.id.input_edit);
+        mMEditText.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction()==MotionEvent.ACTION_UP){
+                    hiddenExpressionFragment();
+                }
+                return false;
+            }
+        });
+
+
         mMsgRecyclerView = (RecyclerView) findViewById(R.id.msgs_view);
         mMsgRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMAdapter = new MsgAdapter();
@@ -87,6 +108,13 @@ public class P2PChatAct extends BaseFragmentActivity {
                 }
             }
         });
+//        setListenerToRootView();
+        if (!isExpressionFragmentAdd()) {
+            ScLog.i(TAG, "!isExpressionFragmentAdd()");
+            FaceFragment faceFragment = FaceFragment.Instance();
+            faceFragment.setListener(this);
+            getSupportFragmentManager().beginTransaction().add(R.id.container, faceFragment).hide(faceFragment).commit();
+        }
 
     }
 
@@ -128,6 +156,103 @@ public class P2PChatAct extends BaseFragmentActivity {
 
     public void back(View view) {
         finish();
+//        startActivity(new Intent(this, EmojiAct.class));
+    }
+
+    public void expressionBtnListener(View view) {
+        showOrHiddenExpressionFragment();
+    }
+
+    protected void showOrHiddenExpressionFragment() {
+        ScLog.i(TAG, "showOrHiddenExpressionFragment");
+
+
+        if (!isExpressionFragmentShow()) {
+            View focusView = this.getCurrentFocus();
+            if (focusView != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
+            }
+            getSupportFragmentManager().beginTransaction().show(getSupportFragmentManager().findFragmentById(R.id.container)).commit();
+        } else {
+            hiddenExpressionFragment();
+        }
+    }
+
+    public boolean isExpressionFragmentAdd() {
+        return getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().findFragmentById(R.id.container) != null;
+    }
+
+    public boolean isExpressionFragmentShow() {
+        return isExpressionFragmentAdd() && getSupportFragmentManager().findFragmentById(R.id.container).isVisible();
+    }
+
+
+    private void hiddenExpressionFragment() {
+        ScLog.i(TAG,"hiddenExpressionFragment");
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.container);
+        if (f != null) {
+            getSupportFragmentManager().beginTransaction().hide(f).commit();
+        }
+
+    }
+
+
+    @Override
+    public void onEmojiDelete() {
+        String text = mMEditText.getText().toString();
+        if (text.isEmpty()) {
+            return;
+        }
+        if ("]".equals(text.substring(text.length() - 1, text.length()))) {
+            int index = text.lastIndexOf("[");
+            if (index == -1) {
+                int action = KeyEvent.ACTION_DOWN;
+                int code = KeyEvent.KEYCODE_DEL;
+                KeyEvent event = new KeyEvent(action, code);
+                mMEditText.onKeyDown(KeyEvent.KEYCODE_DEL, event);
+                displayTextView(mMEditText.getSelectionStart());
+                return;
+            }
+            mMEditText.getText().delete(index, text.length());
+            displayTextView(index);
+            return;
+        }
+        int action = KeyEvent.ACTION_DOWN;
+        int code = KeyEvent.KEYCODE_DEL;
+        KeyEvent event = new KeyEvent(action, code);
+        mMEditText.onKeyDown(KeyEvent.KEYCODE_DEL, event);
+        displayTextView(mMEditText.getSelectionStart());
+    }
+
+
+    private void displayTextView(int selection) {
+        try {
+            EmojiUtil.handlerEmojiText(mMEditText, mMEditText.getText().toString(), this);
+            if (selection != -1) {
+                mMEditText.setSelection(selection);
+            } else {
+                mMEditText.setSelection(mMEditText.getText().toString().length());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onEmojiClick(Emoji emoji) {
+        if (emoji != null) {
+            int index = mMEditText.getSelectionStart();
+            Editable editable = mMEditText.getEditableText();
+
+            ScLog.i(TAG, "index: " + index);
+            if (index < 0) {
+                editable.append(emoji.getContent());
+            } else {
+                editable.insert(index, emoji.getContent());
+            }
+            displayTextView(index + emoji.getContent().length());
+        }
     }
 
 
@@ -171,7 +296,12 @@ public class P2PChatAct extends BaseFragmentActivity {
 
                 holder.avatar.setImageUrl(mOtherUser.avatar, true);
             }
-            holder.msgTxt.setText(item.msg);
+            try {
+                EmojiUtil.handlerEmojiText(holder.msgTxt, item.msg, P2PChatAct.this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
 
@@ -204,4 +334,45 @@ public class P2PChatAct extends BaseFragmentActivity {
         public TextView msgTxt;
         public WebImageView avatar;
     }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (isExpressionFragmentShow()) {
+            hiddenExpressionFragment();
+        } else {
+            finish();
+        }
+    }
+
+    boolean isOpened = false;
+
+    @Deprecated
+    public void setListenerToRootView() {
+        final View activityRootView = getWindow().getDecorView().findViewById(android.R.id.content);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                ScLog.i(TAG, "onGlobalLayout " + heightDiff);
+                if (heightDiff > 100) { // 99% of the time the height diff will be due to a keyboard.
+
+                    if (isOpened == false) {
+                        ScLog.i(TAG, "input method show");
+                        hiddenExpressionFragment();
+                        //Do two things, make the view top visible and the editText smaller
+                    }
+                    isOpened = true;
+                } else if (isOpened == true) {
+                    ScLog.i(TAG, "input method hide");
+                    isOpened = false;
+                }
+            }
+        });
+    }
 }
+
+
+
+

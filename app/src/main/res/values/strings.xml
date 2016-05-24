@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SchoolFellow</string>
+    <string name="app_name">校友圈</string>
     <string-array name="pager_title">
         <item>校友圈</item>
     </string-array>

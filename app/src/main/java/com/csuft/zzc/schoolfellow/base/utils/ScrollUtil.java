@@ -14,6 +14,7 @@ import com.csuft.zzc.schoolfellow.base.view.AbsPullToRefresh;
  */
 public class ScrollUtil {
     private static final String TAG = "ScrollUtil";
+
     public static boolean isScrollViewInTop(View scrolllView) {
         if (scrolllView instanceof ScrollView) {
             return (scrolllView).getScrollY() == 0;
@@ -51,7 +52,10 @@ public class ScrollUtil {
             }
             return false;
         } else if (mRefreshView instanceof ListView) {
-            throw new RuntimeException("unsupport  list view");
+            ListView listView = (ListView) mRefreshView;
+            return (listView.getLastVisiblePosition() == listView.getAdapter().getCount() - 1 &&
+                    listView.getChildAt(listView.getChildCount() - 1).getBottom() <= listView.getHeight()) ;
+
         } else if (mRefreshView instanceof AbsPullToRefresh.IRefreshAble) {
             return ((AbsPullToRefresh.IRefreshAble) mRefreshView).onBottom();
         } else {

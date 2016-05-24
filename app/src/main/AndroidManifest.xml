@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.csuft.zzc.schoolfellow">
 
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
@@ -46,7 +47,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="label">
 
         <activity android:name=".host.SplashAct">
             <intent-filter>
@@ -72,14 +74,13 @@
         <activity android:name=".circle.act.NewsDetailAct"/>
         <activity android:name=".publish.PublishAct"/>
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity"/>
+        <activity android:name=".im.act.EmojiAct"/>
 
         <service
             android:name="com.avos.avoscloud.PushService"
             android:exported="true"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+
     </application>
 
 </manifest>

@@ -29,6 +29,6 @@ public class PullToStickNavView extends AbsPullToRefresh<RefreshIndicator, Stick
     //todo
     @Override
     protected StickNavLayout createRefreshView() {
-        return (StickNavLayout) LayoutInflater.from(getContext()).inflate(R.layout.school_circle_fra_test, null);
+        return (StickNavLayout) LayoutInflater.from(getContext()).inflate(R.layout.school_circle_nav, null);
     }
 }

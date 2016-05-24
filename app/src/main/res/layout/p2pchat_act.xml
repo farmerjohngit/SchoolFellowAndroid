@@ -47,11 +47,15 @@
         android:paddingTop="4dp">
 
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"/>
+            android:onClick="expressionBtnListener"
+            android:layout_gravity="center"
+            android:src="@mipmap/face"
+            android:layout_marginRight="4dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"/>
 
         <EditText
-            android:id="@+id/text"
+            android:id="@+id/input_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="0dp"
@@ -73,4 +77,8 @@
             android:src="@mipmap/btn_send"/>
 
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></FrameLayout>
 </LinearLayout>
