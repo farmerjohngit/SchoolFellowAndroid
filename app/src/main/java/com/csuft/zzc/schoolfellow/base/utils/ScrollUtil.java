@@ -22,12 +22,15 @@ public class ScrollUtil {
             RecyclerView rv = (RecyclerView) scrolllView;
             LinearLayoutManager lm = (LinearLayoutManager) rv.getLayoutManager();
             View topView = lm.findViewByPosition(lm.findFirstVisibleItemPosition());
+            if (topView == null) {
+                return true;
+            }
             int topMargin = 0;
             if (topView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                 ViewGroup.MarginLayoutParams marginLayoutParams = (ViewGroup.MarginLayoutParams) topView.getLayoutParams();
                 topMargin = marginLayoutParams.topMargin;
             }
-            return topView == null ? true : (topView.getTop() == topMargin && lm.findFirstVisibleItemPosition() == 0);
+            return (topView.getTop() == topMargin && lm.findFirstVisibleItemPosition() == 0);
         } else if (scrolllView instanceof ListView) {
             View child = ((ListView) scrolllView).getChildAt(0);
             return ((ListView) scrolllView).getFirstVisiblePosition() == 0 && child == null ? true : child.getTop() == 0;
