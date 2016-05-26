@@ -23,7 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="xxx"/>
+            android:text="xxx"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:onClick="userInfoClick"
+            android:layout_width="36dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:src="@mipmap/tabbar_profile"/>
 
     </com.csuft.zzc.schoolfellow.base.view.TopBar>
 
@@ -47,12 +56,12 @@
         android:paddingTop="4dp">
 
         <ImageView
-            android:onClick="expressionBtnListener"
-            android:layout_gravity="center"
-            android:src="@mipmap/face"
-            android:layout_marginRight="4dp"
             android:layout_width="36dp"
-            android:layout_height="36dp"/>
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="4dp"
+            android:onClick="expressionBtnListener"
+            android:src="@mipmap/face"/>
 
         <EditText
             android:id="@+id/input_edit"
@@ -66,17 +75,18 @@
             android:paddingTop="0dp"/>
 
         <ImageButton
-            android:onClick="send"
             android:id="@+id/input_bottom_bar_btn_send"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
             android:background="@null"
+            android:onClick="send"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:src="@mipmap/btn_send"/>
 
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="wrap_content"

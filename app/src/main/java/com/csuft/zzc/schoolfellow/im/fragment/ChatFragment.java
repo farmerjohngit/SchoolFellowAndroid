@@ -19,7 +19,6 @@ import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
 import com.csuft.zzc.schoolfellow.base.utils.DateUtil;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
-import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.AbsPullToRefresh;
 import com.csuft.zzc.schoolfellow.base.view.PullToListView;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
@@ -47,7 +46,7 @@ public class ChatFragment extends BaseFragment {
 
     @Override
     protected View createContentView(LayoutInflater inflater, @Nullable ViewGroup container) {
-        return inflater.inflate(R.layout.char_fra, null);
+        return inflater.inflate(R.layout.chat_fra, null);
     }
 
     @Override

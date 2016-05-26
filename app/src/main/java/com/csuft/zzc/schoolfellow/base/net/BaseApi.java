@@ -11,8 +11,8 @@ import java.util.Map;
  */
 public class BaseApi {
 
-    //                public static final String HOST_URL = "http://104.224.133.227:3000";
-    public static final String HOST_URL = "http://192.168.56.1:3000";
+                    public static final String HOST_URL = "http://104.224.133.227:3000";
+//    public static final String HOST_URL = "http://192.168.56.1:3000";
     AbsNetExecutorFactory netExecutorFactory;
 
     private static class SingletonHolder {

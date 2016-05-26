@@ -53,8 +53,11 @@ public class ScrollUtil {
             return false;
         } else if (mRefreshView instanceof ListView) {
             ListView listView = (ListView) mRefreshView;
+            if (listView.getChildAt(listView.getChildCount() - 1) == null) {
+                return true;
+            }
             return (listView.getLastVisiblePosition() == listView.getAdapter().getCount() - 1 &&
-                    listView.getChildAt(listView.getChildCount() - 1).getBottom() <= listView.getHeight()) ;
+                    listView.getChildAt(listView.getChildCount() - 1).getBottom() <= listView.getHeight());
 
         } else if (mRefreshView instanceof AbsPullToRefresh.IRefreshAble) {
             return ((AbsPullToRefresh.IRefreshAble) mRefreshView).onBottom();

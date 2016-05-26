@@ -1,6 +1,7 @@
 package com.csuft.zzc.schoolfellow.im.act;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,6 +36,7 @@ import com.csuft.zzc.schoolfellow.base.view.SpaceItemDecoration;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.host.data.UserData;
 import com.csuft.zzc.schoolfellow.im.model.ImMsgItem;
+import com.csuft.zzc.schoolfellow.user.UserInfoAct;
 import com.csuft.zzc.schoolfellow.user.UserManager;
 import com.sqk.emojirelease.Emoji;
 import com.sqk.emojirelease.EmojiUtil;
@@ -74,7 +76,7 @@ public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnE
 
         }
         TextView nameTxt = (TextView) findViewById(R.id.user_name);
-        nameTxt.setText(mOtherUser.userName);
+        nameTxt.setText(mOtherUser.name);
         mMsgList = new ArrayList<>();
         mLoginUser = UserManager.getInstance().getUser();
         mMEditText = (EditText) findViewById(R.id.input_edit);
@@ -156,7 +158,6 @@ public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnE
 
     public void back(View view) {
         finish();
-//        startActivity(new Intent(this, EmojiAct.class));
     }
 
     public void expressionBtnListener(View view) {
@@ -253,6 +254,14 @@ public class P2PChatAct extends BaseFragmentActivity implements FaceFragment.OnE
             }
             displayTextView(index + emoji.getContent().length());
         }
+    }
+
+    public void userInfoClick(View view) {
+        Intent intent = new Intent(this, UserInfoAct.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("user", mOtherUser);
+        intent.putExtra("bundle", bundle);
+        startActivity(intent);
     }
 
 

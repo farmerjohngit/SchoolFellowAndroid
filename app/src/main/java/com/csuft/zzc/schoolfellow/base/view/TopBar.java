@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 
@@ -12,7 +13,7 @@ import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
  * 一个封装的很垃圾的topbar
  * Created by wangzhi on 16/3/10.
  */
-public class TopBar extends LinearLayout {
+public class TopBar extends RelativeLayout {
 
     protected View mCenterView;
     protected View mLeftView;
@@ -21,7 +22,7 @@ public class TopBar extends LinearLayout {
     protected LayoutParamsFactory mLayoutParamsFactory;
 
     public interface LayoutParamsFactory {
-        LinearLayout.LayoutParams generateParams(ViewGroup.LayoutParams oldParams, MODE mode);
+        RelativeLayout.LayoutParams generateParams(ViewGroup.LayoutParams oldParams, MODE mode);
 
     }
 
@@ -36,7 +37,7 @@ public class TopBar extends LinearLayout {
     }
 
     private void init() {
-        setOrientation(HORIZONTAL);
+
     }
 
     @Override
@@ -69,25 +70,26 @@ public class TopBar extends LinearLayout {
 
 //        AssertUtil.assertNotNull(oldParams);
 
-        LinearLayout.LayoutParams layoutParams = null;
+        LayoutParams layoutParams = null;
+        if (oldParams == null) {
+            layoutParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        } else {
+            layoutParams = new LayoutParams((MarginLayoutParams) oldParams);
+            if (!(oldParams instanceof MarginLayoutParams)) {
+                layoutParams.leftMargin = ScreenUtil.instance().dip2px(8);
+                layoutParams.rightMargin = ScreenUtil.instance().dip2px(8);
+            }
+
+        }
         switch (mode) {
             case CENTER:
-                layoutParams = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-                layoutParams.weight = 1;
+                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
                 break;
             case RIGHT:
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                break;
             case LEFT:
-                if (oldParams == null) {
-                    layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                } else {
-                    layoutParams = new LinearLayout.LayoutParams(oldParams);
-                    if (!(oldParams instanceof MarginLayoutParams)) {
-                        layoutParams.leftMargin = ScreenUtil.instance().dip2px(8);
-                        layoutParams.rightMargin = ScreenUtil.instance().dip2px(8);
-                    }
-
-                }
-
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                 break;
 
         }

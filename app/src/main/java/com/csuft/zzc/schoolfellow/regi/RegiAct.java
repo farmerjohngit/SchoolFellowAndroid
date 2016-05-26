@@ -143,29 +143,29 @@ public class RegiAct extends BaseFragmentActivity {
             Toast.makeText(this, "账号和密码不能为空～", Toast.LENGTH_SHORT).show();
             return;
         }
-//
-//        if (TextUtils.isEmpty(mNameEdit.getText().toString())) {
-//            Toast.makeText(this, "请填写姓名～", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (TextUtils.isEmpty(mClassEdit.getText().toString())) {
-//            Toast.makeText(this, "请填写班级～", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if(!RegiCheckUtil.isFormatAccountOrPwd(mUserEdit.getText().toString())){
-//            Toast.makeText(this, "账号必须是7-12位英文字母或数字", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if(!RegiCheckUtil.isFormatAccountOrPwd(mPassword.getText().toString())){
-//            Toast.makeText(this, "密码必须是7-12位英文字母或数字", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if(!RegiCheckUtil.isFormatName(mNameEdit.getText().toString())){
-//            Toast.makeText(this, "姓名必须是2到10位中文汉字", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+
+        if (TextUtils.isEmpty(mNameEdit.getText().toString())) {
+            Toast.makeText(this, "请填写姓名～", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(mClassEdit.getText().toString())) {
+            Toast.makeText(this, "请填写班级～", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!RegiCheckUtil.isFormatAccountOrPwd(mUserEdit.getText().toString())){
+            Toast.makeText(this, "账号必须是7-12位英文字母或数字", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(!RegiCheckUtil.isFormatAccountOrPwd(mPassword.getText().toString())){
+            Toast.makeText(this, "密码必须是7-12位英文字母或数字", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(!RegiCheckUtil.isFormatName(mNameEdit.getText().toString())){
+            Toast.makeText(this, "姓名必须是2到10位中文汉字", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         reqData();
 

@@ -13,14 +13,11 @@ import android.widget.Toast;
 
 import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.fragment.BaseFragment;
-import com.csuft.zzc.schoolfellow.base.net.BaseApi;
-import com.csuft.zzc.schoolfellow.base.net.CallBack;
-import com.csuft.zzc.schoolfellow.base.utils.ScLog;
-import com.csuft.zzc.schoolfellow.base.view.EasyToast;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
+import com.csuft.zzc.schoolfellow.host.data.UserData;
 import com.csuft.zzc.schoolfellow.im.act.ContactPersonAct;
 import com.csuft.zzc.schoolfellow.login.LoginAct;
-import com.csuft.zzc.schoolfellow.search.QueryUserData;
+import com.csuft.zzc.schoolfellow.user.UserInfoAct;
 import com.csuft.zzc.schoolfellow.user.UserManager;
 
 import java.util.HashMap;
@@ -39,6 +36,7 @@ public class MeFragment extends BaseFragment {
     private TextView mCareNumTxt;
     private TextView mFollowTxt;
     private Button mExitBtn;
+    private UserData mUserData;
 
 
     @Override
@@ -95,43 +93,32 @@ public class MeFragment extends BaseFragment {
                 getActivity().finish();
             }
         });
-        final Button button = (Button) mContentView.findViewById(R.id.btn);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.me_basic_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                EasyToast.make(button, "h" + i++, "default", 2600).show();
+                Intent intent = new Intent(getActivity(), UserInfoAct.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", mUserData);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
 
             }
         });
-        reqData();
+        initData();
+
+
     }
 
     private static final String TAG = "MeFragment";
 
-    public void reqData() {
-        HashMap<String, String> hashMap = new HashMap();
-        hashMap.put("userName", UserManager.getInstance().getUserName());
-        hashMap.put("wantData", "1");
-        BaseApi.getInstance().get(BaseApi.HOST_URL + "/user_info", hashMap, QueryUserData.class, new CallBack<QueryUserData>() {
-            @Override
-            public void onSuccess(QueryUserData data) {
-                ScLog.i(TAG, "onSuccess " + data.result.user.avatar);
-                nameTxt.setText(data.result.user.name);
-                if (!TextUtils.isEmpty(data.result.user.introduction)) {
-                    introductionTxt.setText(data.result.user.introduction);
-                }
-                headImg.setImageUrl(data.result.user.avatar, true);
-//                mFollowTxt.setText(data.result.user.followerNum);
-//                mCareNumTxt.setText(data.result.user.careNum);
-//                mWbNumTxt.setText(data.result.user.weiboNum);
-            }
+    public void initData() {
+        mUserData = UserManager.getInstance().getUser();
+        nameTxt.setText(mUserData.name);
+        if (!TextUtils.isEmpty(mUserData.introduction)) {
+            introductionTxt.setText(mUserData.introduction);
+        }
+        headImg.setImageUrl(mUserData.avatar, true);
 
-            @Override
-            public void onFailure(int code, String error) {
-
-            }
-        });
     }
 }

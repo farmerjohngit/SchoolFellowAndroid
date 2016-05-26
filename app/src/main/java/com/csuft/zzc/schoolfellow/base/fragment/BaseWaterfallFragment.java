@@ -56,7 +56,7 @@ public abstract class BaseWaterfallFragment extends BaseFragment {
     }
 
     public void reqData() {
-        ScLog.i("-----reqData-------");
+        ScLog.i("-----initData-------");
 
     }
 

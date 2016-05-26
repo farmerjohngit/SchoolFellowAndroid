@@ -23,6 +23,7 @@
         android:layout_marginRight="6dp"
         android:layout_toLeftOf="@+id/avatar_img"
         android:background="@drawable/jmui_msg_send_bg"
+        android:gravity="center_vertical"
         android:text="消息"
         android:textColor="@android:color/black"/>
 </RelativeLayout>

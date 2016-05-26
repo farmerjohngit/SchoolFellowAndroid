@@ -81,4 +81,8 @@ public class AddFriendAct extends BaseFragmentActivity {
                 }).create();
         dialog.show();
     }
+
+    public void back(View view) {
+        finish();
+    }
 }
