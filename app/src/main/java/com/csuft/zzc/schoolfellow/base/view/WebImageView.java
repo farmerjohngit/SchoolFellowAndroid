@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
@@ -13,6 +14,7 @@ import com.squareup.picasso.RequestCreator;
  * Created by wangzhi on 16/3/10.
  */
 public class WebImageView extends ImageView {
+    private static final String TAG = "WebImageView";
 
     public WebImageView(Context context) {
         super(context);
@@ -48,6 +50,17 @@ public class WebImageView extends ImageView {
         if (circle) {
             creator.transform(new PicassoCirclTransform());
         }
-        creator.into(this);
+        creator.into(this, new Callback() {
+
+            @Override
+            public void onSuccess() {
+                ScLog.i(TAG, "onSuccess");
+            }
+
+            @Override
+            public void onError() {
+                ScLog.i(TAG, "onError");
+            }
+        });
     }
 }

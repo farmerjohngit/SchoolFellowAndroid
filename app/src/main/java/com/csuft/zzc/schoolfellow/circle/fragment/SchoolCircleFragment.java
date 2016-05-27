@@ -1,5 +1,6 @@
 package com.csuft.zzc.schoolfellow.circle.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -45,13 +46,11 @@ public class SchoolCircleFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("wangzhi", "onCreate");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.i("wangzhi", "onCreateView");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -67,7 +66,7 @@ public class SchoolCircleFragment extends BaseFragment {
         topBar.setOnRightClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), PublishAct.class));
+                startActivityForResult(new Intent(getActivity(), PublishAct.class), 100);
             }
         });
         mPullToRefresh = (PullToStickNavView) mContentView.findViewById(R.id.pullToRefresh);
@@ -175,7 +174,15 @@ public class SchoolCircleFragment extends BaseFragment {
             }
         });
 
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            reqData();
+        }
     }
 
     class SchoolCirclePagerAdapter extends FragmentPagerAdapter {

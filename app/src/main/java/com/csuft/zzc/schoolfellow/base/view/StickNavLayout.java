@@ -116,10 +116,10 @@ public class StickNavLayout extends LinearLayout implements AbsPullToRefresh.IRe
             pagerHeight = mHeight - mNav.getMeasuredHeight();
         }
         layoutParams.height = pagerHeight;
-        Log.e(TAG, "onMeasure   height:  " + MeasureSpec.getSize(heightMeasureSpec)
-                + " getMeasuredHeight: " + getMeasuredHeight()
-                + " nav getMeasuredHeight:  " + mNav.getMeasuredHeight()
-                + " pagerHeight " + pagerHeight);
+//        Log.e(TAG, "onMeasure   height:  " + MeasureSpec.getSize(heightMeasureSpec)
+//                + " getMeasuredHeight: " + getMeasuredHeight()
+//                + " nav getMeasuredHeight:  " + mNav.getMeasuredHeight()
+//                + " pagerHeight " + pagerHeight);
 
         if (!measureFlag) {
             mWidth = MeasureSpec.getSize(widthMeasureSpec);

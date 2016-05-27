@@ -54,7 +54,6 @@ public class OkHttpNetExecutor implements INetExecutor {
 
             @Override
             public void onResponse(Response response) throws IOException {
-                ScLog.i(TAG, "onRes" + Thread.currentThread().equals(Looper.getMainLooper().getThread()));
                 Class clazz = httpRequest.getCallBackClazz();
 
                 String bodyString = response.body().string();

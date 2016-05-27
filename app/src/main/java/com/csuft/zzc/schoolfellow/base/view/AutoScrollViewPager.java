@@ -111,8 +111,6 @@ public class AutoScrollViewPager extends AbsAutoScrollLayout<ViewPager> {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ScLog.i("count: " + getBannerCount());
-            ScLog.i("position: " + position);
 
             if (mDataList == null) {
                 return null;

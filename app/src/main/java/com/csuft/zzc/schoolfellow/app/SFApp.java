@@ -10,6 +10,7 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.csuft.zzc.schoolfellow.BuildConfig;
 import com.csuft.zzc.schoolfellow.base.im.ImUtil;
 import com.csuft.zzc.schoolfellow.base.utils.AppContextGetter;
+import com.csuft.zzc.schoolfellow.base.utils.FileUtil;
 import com.csuft.zzc.schoolfellow.host.SplashAct;
 import com.csuft.zzc.schoolfellow.im.SCMessageHandler;
 import com.mogujie.layoutcast.LayoutCast;
@@ -38,7 +39,7 @@ public class SFApp extends Application {
         AVInstallation.getCurrentInstallation().saveInBackground();
         AVOSCloud.setDebugLogEnabled(BuildConfig.DEBUG);
         PushService.setDefaultPushCallback(this, SplashAct.class);
-
+        FileUtil.initDir();
     }
 
 

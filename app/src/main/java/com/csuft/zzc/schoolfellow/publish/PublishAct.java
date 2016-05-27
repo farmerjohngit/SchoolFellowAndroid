@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -25,12 +26,15 @@ import com.csuft.zzc.schoolfellow.base.act.BaseFragmentActivity;
 import com.csuft.zzc.schoolfellow.base.data.QueryData;
 import com.csuft.zzc.schoolfellow.base.net.BaseApi;
 import com.csuft.zzc.schoolfellow.base.net.CallBack;
+import com.csuft.zzc.schoolfellow.base.utils.BitmapUtil;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.ScToast;
 import com.csuft.zzc.schoolfellow.base.view.TopBar;
 import com.csuft.zzc.schoolfellow.user.UserManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,7 +45,7 @@ public class PublishAct extends BaseFragmentActivity {
 
     private LinearLayout mSelectImages;
     ImageView addImageView;
-    List<String> images = new ArrayList<>();
+    String imagePath;
     private EditText mEdit;
 
     @Override
@@ -63,21 +67,37 @@ public class PublishAct extends BaseFragmentActivity {
                 HashMap params = new HashMap();
                 params.put("text", mEdit.getText().toString());
                 params.put("userName", UserManager.getInstance().getUser().userName);
-                BaseApi.getInstance().postWithImage(BaseApi.HOST_URL + "/publish", params, images, PublishRespData.class, new CallBack<PublishRespData>() {
-                    @Override
-                    public void onSuccess(PublishRespData data) {
-                        ScLog.i(TAG, "onSuccess");
-                        if (QueryData.SUCCESS == data.result.responseResult) {
-                            finish();
+                addImageView.setDrawingCacheEnabled(true);
+                Bitmap bitmap = addImageView.getDrawingCache();
+                String bitmapPath = BitmapUtil.saveBiteMapToSdTemp("temp", bitmap);
+                addImageView.setDrawingCacheEnabled(false);
+                if (!TextUtils.isEmpty(bitmapPath)) {
+                    ScLog.i(TAG, "bitmap path is " + bitmapPath);
+                    ArrayList fileList = new ArrayList();
+                    if (!TextUtils.isEmpty(imagePath)) {
+                        fileList.add(imagePath);
+                    }
+                    ScLog.i(TAG, "fileList size  " + fileList.size());
+                    BaseApi.getInstance().postWithImage(BaseApi.HOST_URL + "/publish", params, fileList, PublishRespData.class, new CallBack<PublishRespData>() {
+                        @Override
+                        public void onSuccess(PublishRespData data) {
+                            ScLog.i(TAG, "onSuccess");
+                            if (QueryData.SUCCESS == data.result.responseResult) {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                            ScToast.toast(data.result.responseMsg);
                         }
-                        ScToast.toast(data.result.responseMsg);
-                    }
 
-                    @Override
-                    public void onFailure(int code, String error) {
-                        ScLog.i(TAG, "onFailure");
-                    }
-                });
+                        @Override
+                        public void onFailure(int code, String error) {
+                            ScLog.i(TAG, "onFailure:" + error);
+                        }
+                    });
+                } else {
+                    ScLog.i(TAG, "bitmap path is null");
+                }
+
             }
         });
         mSelectImages = (LinearLayout) findViewById(R.id.select_img);
@@ -102,12 +122,27 @@ public class PublishAct extends BaseFragmentActivity {
             Log.e("uri", uri.toString());
             ContentResolver cr = this.getContentResolver();
             try {
-                String realPath = getRealPathFromURI(this, uri);
+
+                String realPath = "";
+                ScLog.i(TAG, "urk " + uri.getScheme() + "<>" + uri.getPath() + "<>" + uri.getHost());
+                if (uri.getScheme().equals("file:")) {
+                    realPath = uri.getPath();
+                } else {
+                    realPath = getRealPathFromURI(this, uri);
+                }
                 ScLog.i(TAG, "图片真实路径：" + realPath);
                 if (realPath != null) {
-                    images.add(realPath);
+                    imagePath = realPath;
                 }
-                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
+
+
+                options.inSampleSize = Math.min(options.outWidth, options.outHeight) / ScreenUtil.instance().dip2px(100);
+                options.inJustDecodeBounds = false;
+                bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri), null, options);
+
                 ImageView imageView = addImageView;
                 /* 将Bitmap设定到ImageView */
                 imageView.setImageBitmap(bitmap);

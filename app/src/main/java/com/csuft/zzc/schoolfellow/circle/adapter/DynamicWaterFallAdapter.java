@@ -12,6 +12,7 @@ import com.csuft.zzc.schoolfellow.R;
 import com.csuft.zzc.schoolfellow.base.utils.ArrayUtil;
 import com.csuft.zzc.schoolfellow.base.utils.DateUtil;
 import com.csuft.zzc.schoolfellow.base.utils.ScLog;
+import com.csuft.zzc.schoolfellow.base.utils.ScreenUtil;
 import com.csuft.zzc.schoolfellow.base.view.WebImageView;
 import com.csuft.zzc.schoolfellow.circle.data.DynamicData;
 
@@ -42,9 +43,9 @@ public class DynamicWaterFallAdapter extends RecyclerView.Adapter<DynamicViewHol
         holder.contentTxt.setText(info.text);
         holder.nameTxt.setText(info.name);
         holder.timeTxt.setText(DateUtil.dataFormatByDefault(info.time));
-        ScLog.i(TAG, "info.time " + info.time);
         holder.headImg.setImageUrl(info.avatar, true);
         String url = ArrayUtil.getFirstItem(info.imgs);
+        ScLog.i(TAG, "url:   " + ArrayUtil.getFirstItem(info.imgs));
         if (TextUtils.isEmpty(url)) {
             holder.publishImg.setVisibility(View.GONE);
         } else {
